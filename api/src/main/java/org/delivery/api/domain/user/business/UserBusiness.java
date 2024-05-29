@@ -2,6 +2,8 @@ package org.delivery.api.domain.user.business;
 
 import lombok.RequiredArgsConstructor;
 import org.delivery.api.common.annotation.Business;
+import org.delivery.api.domain.token.business.TokenBusiness;
+import org.delivery.api.domain.token.controller.model.TokenResponse;
 import org.delivery.api.domain.user.controller.model.UserLoginRequest;
 import org.delivery.api.domain.user.controller.model.UserRegisterRequest;
 import org.delivery.api.domain.user.controller.model.UserResponse;
@@ -15,6 +17,8 @@ public class UserBusiness {
     private final UserService userService;
     private final UserConverter userConverter;
 
+    private final TokenBusiness tokenBusiness;
+
     public UserResponse register(UserRegisterRequest request) {
         var entity = userConverter.toEntity(request);
         var savedEntity = userService.register(entity);
@@ -22,11 +26,16 @@ public class UserBusiness {
         return response;
     }
 
-    public UserResponse login(UserLoginRequest request) {
+    public TokenResponse login(UserLoginRequest request) {
         var user = userService.login(request);
 
-        // 토큰 생성 후 전달
+        var tokenResponse = tokenBusiness.issueToken(user);
+        return tokenResponse;
+    }
 
-        return userConverter.toResponse(user);
+    public UserResponse me(Long userId) {
+        var user = userService.getUserWithThrow(userId);
+        var response = userConverter.toResponse(user);
+        return response;
     }
 }
