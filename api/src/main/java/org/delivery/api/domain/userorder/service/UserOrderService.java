@@ -17,6 +17,13 @@ import java.util.Optional;
 public class UserOrderService {
     private final UserOrderRepository userOrderRepository;
 
+    public UserOrderEntity getUserOrderWithOutStatusWithThrow(Long id, Long userId){
+        var userOrder = userOrderRepository.findAllByIdAndUserId(id, userId)
+                .orElseThrow(()->new ApiException(ErrorCode.NULL_POINT));
+
+        return userOrder;
+    }
+
     public UserOrderEntity getUserOrderWithThrow(Long id, Long userId){
         var userOrder = userOrderRepository.findByIdAndStatusAndUserId(id, UserOrderStatus.REGISTERED, userId)
                 .orElseThrow(()->new ApiException(ErrorCode.NULL_POINT));
@@ -32,7 +39,17 @@ public class UserOrderService {
         return userOrderRepository.findAllByUserIdAndStatusInOrderByIdDesc(userId, statusList);
     }
 
+    public List<UserOrderEntity> currentOrders(Long userId){
+        // 현재 진행 중인 주문
+        var statusList = List.of(UserOrderStatus.ORDER,UserOrderStatus.COOKING,UserOrderStatus.ACCEPT,UserOrderStatus.DELIVERY) ;
+        return getUserOrderList(userId,statusList);
+    }
 
+    public List<UserOrderEntity> historyOrders(Long userId){
+        //완료된 주문
+        var statusList = List.of(UserOrderStatus.RECEIVE) ;
+        return getUserOrderList(userId,statusList);
+    }
 
     public UserOrderEntity order(UserOrderEntity userOrderEntity){
         return Optional.ofNullable(userOrderEntity)
@@ -44,6 +61,45 @@ public class UserOrderService {
                 .orElseThrow(()->new ApiException(ErrorCode.NULL_POINT));
     }
 
+    public UserOrderEntity setStatus(UserOrderEntity userOrderEntity, UserOrderStatus status){
+        userOrderEntity.setStatus(status);
+        return userOrderRepository.save(userOrderEntity);
+    }
 
+    public UserOrderEntity accept(UserOrderEntity userOrderEntity){
+        return Optional.ofNullable(userOrderEntity)
+                .map(it->{
+                    it.setAcceptedAt(LocalDateTime.now());
+                    return setStatus(it, UserOrderStatus.ACCEPT);
+                })
+                .orElseThrow(()->new ApiException(ErrorCode.NULL_POINT));
+    }
+
+    public UserOrderEntity cooking(UserOrderEntity userOrderEntity){
+        return Optional.ofNullable(userOrderEntity)
+                .map(it->{
+                    it.setCookingStartedAt(LocalDateTime.now());
+                    return setStatus(it, UserOrderStatus.COOKING);
+                })
+                .orElseThrow(()->new ApiException(ErrorCode.NULL_POINT));
+    }
+
+    public UserOrderEntity delivery(UserOrderEntity userOrderEntity){
+        return Optional.ofNullable(userOrderEntity)
+                .map(it->{
+                    it.setDeliveryStartedAt(LocalDateTime.now());
+                    return setStatus(it, UserOrderStatus.DELIVERY);
+                })
+                .orElseThrow(()->new ApiException(ErrorCode.NULL_POINT));
+    }
+
+    public UserOrderEntity receive(UserOrderEntity userOrderEntity){
+        return Optional.ofNullable(userOrderEntity)
+                .map(it->{
+                    it.setReceivedAt(LocalDateTime.now());
+                    return setStatus(it, UserOrderStatus.RECEIVE);
+                })
+                .orElseThrow(()->new ApiException(ErrorCode.NULL_POINT));
+    }
 
 }
