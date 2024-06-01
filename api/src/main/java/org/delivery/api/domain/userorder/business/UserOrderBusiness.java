@@ -11,13 +11,12 @@ import org.delivery.api.domain.userorder.controller.model.UserOrderDetailRespons
 import org.delivery.api.domain.userorder.controller.model.UserOrderRequest;
 import org.delivery.api.domain.userorder.controller.model.UserOrderResponse;
 import org.delivery.api.domain.userorder.converter.UserOrderConverter;
+import org.delivery.api.domain.userorder.producer.UserOrderProducer;
 import org.delivery.api.domain.userorder.service.UserOrderService;
 import org.delivery.api.domain.userordermenu.converter.UserOrderMenuConverter;
 import org.delivery.api.domain.userordermenu.service.UserOrderMenuService;
-import org.delivery.db.store.StoreEntity;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Business
 @RequiredArgsConstructor
@@ -31,6 +30,8 @@ public class UserOrderBusiness {
 
     private final UserOrderMenuConverter userOrderMenuConverter;
     private final UserOrderMenuService userOrderMenuService;
+
+    private final UserOrderProducer userOrderProducer;
 
     private final StoreService storeService;
     public UserOrderResponse order(User user, UserOrderRequest request){
@@ -51,6 +52,10 @@ public class UserOrderBusiness {
         userOrderMenuEntityList.forEach(it->{
             userOrderMenuService.order(it);
         });
+
+        //비동기로 가맹점에 주문 알림
+        userOrderProducer.sendOrder(savedEntity);
+
         return userOrderConverter.toResponse(savedEntity);
     }
 
