@@ -3,6 +3,7 @@ package org.delivery.api.domain.store.controller;
 import lombok.RequiredArgsConstructor;
 import org.delivery.api.common.api.Api;
 import org.delivery.api.domain.store.business.StoreBusiness;
+import org.delivery.api.domain.store.controller.model.StoreDetailResponse;
 import org.delivery.api.domain.store.controller.model.StoreResponse;
 import org.delivery.db.store.enums.StoreCategory;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,5 +28,13 @@ public class StoreApiController {
         return Api.OK(response);
     }
 
+    @GetMapping("/detail")
+    public Api<StoreDetailResponse> detail(
+            @RequestParam(required = false)
+            Long storeId
+    ){
+        var response = storeBusiness.storeDetail(storeId);
+        return Api.OK(response);
+    }
 
 }

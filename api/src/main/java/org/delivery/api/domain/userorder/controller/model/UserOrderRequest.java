@@ -14,4 +14,7 @@ public class UserOrderRequest {
 
     @NotNull
     private List<Long> storeMenuIdList;
+
+    @NotNull
+    private List<Long> countList;
 }

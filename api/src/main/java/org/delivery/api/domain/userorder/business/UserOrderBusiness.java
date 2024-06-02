@@ -17,6 +17,7 @@ import org.delivery.api.domain.userordermenu.converter.UserOrderMenuConverter;
 import org.delivery.api.domain.userordermenu.service.UserOrderMenuService;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Business
 @RequiredArgsConstructor
@@ -43,9 +44,12 @@ public class UserOrderBusiness {
         var userOrderEntity = userOrderConverter.toEntity(user, storeMenuEntityList);
         var savedEntity = userOrderService.order(userOrderEntity);
 
+        var countList = request.getCountList();
+        AtomicInteger index = new AtomicInteger(0);
         var userOrderMenuEntityList = storeMenuEntityList.stream()
                 .map(it-> {
-                   var userOrderMenuEntity = userOrderMenuConverter.toEntity(savedEntity, it);
+                    int currentIndex = index.getAndIncrement();
+                   var userOrderMenuEntity = userOrderMenuConverter.toEntity(savedEntity, it, countList.get(currentIndex));
                    return userOrderMenuEntity;
                 }).toList();
 
@@ -75,7 +79,7 @@ public class UserOrderBusiness {
             return UserOrderDetailResponse.builder()
                     .userOrderResponse(userOrderConverter.toResponse(userOrderEntity))
                     .storeResponse(storeConverter.toResponse(storeEntity))
-                    .storeMenuResponseList(storeMenuConverter.toResponse(storeMenuEntityList))
+                    .userOrderMenuResponseList(userOrderMenuConverter.toResponse(userOrderMenuEntityList, storeMenuEntityList))
                     .build();
         }).toList();
 
@@ -98,7 +102,7 @@ public class UserOrderBusiness {
             return UserOrderDetailResponse.builder()
                     .userOrderResponse(userOrderConverter.toResponse(userOrderEntity))
                     .storeResponse(storeConverter.toResponse(storeEntity))
-                    .storeMenuResponseList(storeMenuConverter.toResponse(storeMenuEntityList))
+                    .userOrderMenuResponseList(userOrderMenuConverter.toResponse(userOrderMenuEntityList, storeMenuEntityList))
                     .build();
         }).toList();
 
@@ -119,7 +123,7 @@ public class UserOrderBusiness {
         return UserOrderDetailResponse.builder()
                 .userOrderResponse(userOrderConverter.toResponse(userOrderEntity))
                 .storeResponse(storeConverter.toResponse(storeEntity))
-                .storeMenuResponseList(storeMenuConverter.toResponse(storeMenuEntityList))
+                .userOrderMenuResponseList(userOrderMenuConverter.toResponse(userOrderMenuEntityList, storeMenuEntityList))
                 .build();
     }
 }

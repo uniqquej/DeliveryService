@@ -2,10 +2,13 @@ package org.delivery.api.domain.store.business;
 
 import lombok.RequiredArgsConstructor;
 import org.delivery.api.common.annotation.Business;
+import org.delivery.api.domain.store.controller.model.StoreDetailResponse;
 import org.delivery.api.domain.store.controller.model.StoreRegisterRequest;
 import org.delivery.api.domain.store.controller.model.StoreResponse;
 import org.delivery.api.domain.store.converter.StoreConverter;
 import org.delivery.api.domain.store.service.StoreService;
+import org.delivery.api.domain.storemenu.business.StoreMenuBusiness;
+import org.delivery.api.domain.storemenu.service.StoreMenuService;
 import org.delivery.db.store.enums.StoreCategory;
 
 import java.util.List;
@@ -15,6 +18,8 @@ import java.util.List;
 public class StoreBusiness {
     private final StoreService storeService;
     private final StoreConverter storeConverter;
+
+    private final StoreMenuBusiness storeMenuBusiness;
 
     public StoreResponse register(StoreRegisterRequest request){
         var entity = storeConverter.toEntity(request);
@@ -27,5 +32,17 @@ public class StoreBusiness {
         var entityList = storeService.searchByCategory(category);
         var response = entityList.stream().map(storeConverter::toResponse);
         return response.toList();
+    }
+
+    public StoreDetailResponse storeDetail(Long storeId){
+        var storeEntity = storeService.getStoreWithThrow(storeId);
+        var storeResponse = storeConverter.toResponse(storeEntity);
+
+        var menuList = storeMenuBusiness.search(storeId);
+
+        return StoreDetailResponse.builder()
+                .store(storeResponse)
+                .menuList(menuList)
+                .build();
     }
 }

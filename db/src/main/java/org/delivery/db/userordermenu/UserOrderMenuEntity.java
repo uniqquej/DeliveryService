@@ -23,6 +23,9 @@ public class UserOrderMenuEntity extends BaseEntity {
     @Column(nullable = false)
     private Long storeMenuId;
 
+    @Column(nullable = false)
+    private Long count;
+
     @Column(nullable = false, length = 50, columnDefinition = "varchar(50)")
     @Enumerated(EnumType.STRING)
     private UserOrderMenuStatus status;
