@@ -12,10 +12,18 @@ import java.util.List;
 @Converter
 public class UserOrderConverter {
 
-    public UserOrderEntity toEntity(User user, List<StoreMenuEntity> storeMenuEntityList){
-        var totalAmount = storeMenuEntityList.stream()
-                .map(it->it.getAmount())
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    public UserOrderEntity toEntity(User user, List<StoreMenuEntity> storeMenuEntityList, List<Long> countList){
+        var totalAmount = BigDecimal.ZERO;
+
+        if(storeMenuEntityList.size()!=countList.size())
+            throw new IllegalArgumentException("잘못된 입력");
+
+        for(int i=0;i<storeMenuEntityList.size();i++){
+            StoreMenuEntity storeMenuEntity = storeMenuEntityList.get(i);
+            Long count = countList.get(i);
+            BigDecimal amount = storeMenuEntity.getAmount().multiply(BigDecimal.valueOf(count));
+            totalAmount = totalAmount.add(amount);
+        }
 
         return UserOrderEntity.builder()
                 .userId(user.getId())
