@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.delivery.db.BaseEntity;
+import org.delivery.db.user.enums.UserRole;
 import org.delivery.db.user.enums.UserStatus;
 
 import java.time.LocalDateTime;
@@ -35,6 +36,10 @@ public class UserEntity extends BaseEntity {
     @Column(length = 50, nullable = false, columnDefinition = "varchar(50)")
     @Enumerated(EnumType.STRING)
     private UserStatus status;
+
+    @Column(length = 45, nullable = false, columnDefinition = "varchar(45)")
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
 
     private LocalDateTime registeredAt;
 

@@ -21,7 +21,8 @@ public class TokenBusiness {
         return Optional.ofNullable(user)
                 .map(it->{
                     var userId = user.getId();
-                    var accessToken = tokenService.issueAccessToken(userId);
+                    var role = user.getRole();
+                    var accessToken = tokenService.issueAccessToken(userId,role);
                     var refreshToken = tokenService.issueRefreshToken(userId);
 
                     return tokenConverter.toResponnse(accessToken,refreshToken);

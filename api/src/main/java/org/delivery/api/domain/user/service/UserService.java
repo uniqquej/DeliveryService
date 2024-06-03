@@ -7,6 +7,7 @@ import org.delivery.api.common.exception.ApiException;
 import org.delivery.api.domain.user.controller.model.UserLoginRequest;
 import org.delivery.db.user.UserEntity;
 import org.delivery.db.user.UserRepository;
+import org.delivery.db.user.enums.UserRole;
 import org.delivery.db.user.enums.UserStatus;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ public class UserService {
     public UserEntity register(UserEntity userEntity){
         return Optional.ofNullable(userEntity)
                 .map(it->{
+                    userEntity.setRole(UserRole.USER);
                     userEntity.setStatus(UserStatus.REGISTERED);
                     userEntity.setRegisteredAt(LocalDateTime.now());
                     return userRepository.save(userEntity);

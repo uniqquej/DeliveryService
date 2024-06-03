@@ -5,6 +5,7 @@ import org.delivery.api.common.error.ErrorCode;
 import org.delivery.api.common.exception.ApiException;
 import org.delivery.api.domain.token.ifs.TokenHelperIfs;
 import org.delivery.api.domain.token.model.TokenDto;
+import org.delivery.db.user.enums.UserRole;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -15,9 +16,10 @@ import java.util.Objects;
 public class TokenService {
     private final TokenHelperIfs tokenHelperIfs;
 
-    public TokenDto issueAccessToken(Long userId){
+    public TokenDto issueAccessToken(Long userId, UserRole role){
         var data = new HashMap<String, Object>();
         data.put("userId",userId);
+        data.put("role",role);
         return tokenHelperIfs.issueAccessToken(data);
     }
 
