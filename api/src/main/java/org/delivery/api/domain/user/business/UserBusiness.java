@@ -7,6 +7,7 @@ import org.delivery.api.domain.token.controller.model.TokenResponse;
 import org.delivery.api.domain.user.controller.model.UserLoginRequest;
 import org.delivery.api.domain.user.controller.model.UserRegisterRequest;
 import org.delivery.api.domain.user.controller.model.UserResponse;
+import org.delivery.api.domain.user.controller.model.UserUpdateRequest;
 import org.delivery.api.domain.user.converter.UserConverter;
 import org.delivery.api.domain.user.model.User;
 import org.delivery.api.domain.user.service.UserService;
@@ -36,6 +37,12 @@ public class UserBusiness {
 
     public UserResponse me(User user) {
         var userEntity = userService.getUserWithThrow(user.getId());
+        var response = userConverter.toResponse(userEntity);
+        return response;
+    }
+
+    public UserResponse update(UserUpdateRequest request, User user) {
+        var userEntity = userService.update(user.getId(),request);
         var response = userConverter.toResponse(userEntity);
         return response;
     }

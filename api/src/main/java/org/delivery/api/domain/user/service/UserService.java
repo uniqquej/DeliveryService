@@ -1,10 +1,13 @@
 package org.delivery.api.domain.user.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.delivery.api.common.error.ErrorCode;
 import org.delivery.api.common.error.UserErrorCode;
 import org.delivery.api.common.exception.ApiException;
 import org.delivery.api.domain.user.controller.model.UserLoginRequest;
+import org.delivery.api.domain.user.controller.model.UserUpdateRequest;
+import org.delivery.api.domain.user.model.User;
 import org.delivery.db.user.UserEntity;
 import org.delivery.db.user.UserRepository;
 import org.delivery.db.user.enums.UserRole;
@@ -43,5 +46,18 @@ public class UserService {
     public UserEntity getUserWithThrow(Long userId){
         return userRepository.findFirstByIdAndStatusOrderByIdDesc(userId,UserStatus.REGISTERED)
                 .orElseThrow(()-> new ApiException(UserErrorCode.USER_NOT_FOUND));
+    }
+
+    @Transactional
+    public UserEntity update(Long userId, UserUpdateRequest request){
+        UserEntity user = getUserWithThrow(userId);
+        System.out.println(user.getPassword());
+        System.out.println(request.getPassword());
+        if(!user.getPassword().equals(request.getPassword())) throw new ApiException(UserErrorCode.PASSWORD_ERROR);
+
+        user.setAddress(request.getAddress());
+        user.setName(request.getName());
+        return user;
+
     }
 }
