@@ -55,10 +55,10 @@ public class ReviewApiController {
     @PostMapping("/id/{id}")
     public Api<ReviewResponse> updateReview(
             @PathVariable Long id,
-            @RequestBody ReviewUpdateRequest request,
+            @RequestBody Api<ReviewUpdateRequest> request,
             @Parameter(hidden = true) @UserSession User user
             ){
-        var response = reviewBusiness.updateReview(id, request, user);
+        var response = reviewBusiness.updateReview(id, request.getBody(), user);
         return Api.OK(response);
     }
 

@@ -21,6 +21,7 @@ public class ReviewConverter {
 
     public ReviewResponse toResponse(ReviewEntity reviewEntity){
         return ReviewResponse.builder()
+                .id(reviewEntity.getId())
                 .content(reviewEntity.getContent())
                 .star(reviewEntity.getStar())
                 .status(reviewEntity.getStatus())
