@@ -20,5 +20,5 @@ public class ReviewRegisterRequest {
     private Long userOrderId;
 
     @NotNull
-    private Long storerId;
+    private Long storeId;
 }

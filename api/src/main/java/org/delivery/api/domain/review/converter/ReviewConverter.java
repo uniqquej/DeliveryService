@@ -14,7 +14,7 @@ public class ReviewConverter {
                 .content(request.getContent())
                 .star(request.getStar())
                 .userId(user.getId())
-                .storeId(request.getStorerId())
+                .storeId(request.getStoreId())
                 .userOrderId(request.getUserOrderId())
                 .build();
     }

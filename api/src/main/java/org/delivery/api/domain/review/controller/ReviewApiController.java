@@ -24,10 +24,10 @@ public class ReviewApiController {
 
     @PostMapping("/register")
     public Api<ReviewResponse> register(
-            @Valid @RequestBody ReviewRegisterRequest request,
+            @Valid @RequestBody Api<ReviewRegisterRequest> request,
             @Parameter(hidden = true) @UserSession User user
     ){
-        var response = reviewBusiness.register(request,user);
+        var response = reviewBusiness.register(request.getBody(),user);
         return Api.OK(response);
     }
 
