@@ -36,8 +36,8 @@ public class StoreMenuApiController {
             @RequestBody @Valid Api<StoreMenuRegisterRequest> request,
             @Parameter(hidden = true) @UserSession User user
     ){
-        if(user.getRole() != UserRole.ADMIN)
-            throw new IllegalArgumentException("잘못된 접근");
+//        if(user.getRole() != UserRole.ADMIN)
+//            throw new IllegalArgumentException("잘못된 접근");
 
         var response = storeMenuBusiness.register(request.getBody());
         return Api.OK(response);

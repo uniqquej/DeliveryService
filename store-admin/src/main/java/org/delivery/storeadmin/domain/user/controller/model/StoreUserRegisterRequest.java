@@ -5,11 +5,13 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.delivery.db.storeuser.enums.StoreUserRole;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class StoreUserRegisterRequest {
 
     @NotBlank

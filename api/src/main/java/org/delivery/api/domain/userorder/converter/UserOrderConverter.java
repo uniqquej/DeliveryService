@@ -12,7 +12,7 @@ import java.util.List;
 @Converter
 public class UserOrderConverter {
 
-    public UserOrderEntity toEntity(User user, List<StoreMenuEntity> storeMenuEntityList, List<Long> countList){
+    public UserOrderEntity toEntity(User user, List<StoreMenuEntity> storeMenuEntityList, List<Long> countList, Long storeId){
         var totalAmount = BigDecimal.ZERO;
 
         if(storeMenuEntityList.size()!=countList.size())
@@ -27,6 +27,7 @@ public class UserOrderConverter {
 
         return UserOrderEntity.builder()
                 .userId(user.getId())
+                .storeId(storeId)
                 .amount(totalAmount)
                 .build();
     }
@@ -34,6 +35,7 @@ public class UserOrderConverter {
     public UserOrderResponse toResponse(UserOrderEntity userOrderEntity) {
         return UserOrderResponse.builder()
                 .id(userOrderEntity.getId())
+                .storeId(userOrderEntity.getStoreId())
                 .status(userOrderEntity.getStatus())
                 .amount(userOrderEntity.getAmount())
                 .orderedAt(userOrderEntity.getOrderedAt())

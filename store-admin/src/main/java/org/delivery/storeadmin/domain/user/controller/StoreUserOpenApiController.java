@@ -21,6 +21,7 @@ public class StoreUserOpenApiController {
     public StoreUserResponse register(
             @Valid @RequestBody StoreUserRegisterRequest request
     ){
+        System.out.println(request.toString());
         return storeUserBusiness.register(request);
     }
 
