@@ -23,6 +23,6 @@ public class StoreUserRegisterRequest {
     @NotBlank
     private String password;
 
-    @NotNull
-    private StoreUserRole role;
+//    @NotNull
+//    private StoreUserRole role;
 }

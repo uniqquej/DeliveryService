@@ -20,7 +20,6 @@ public class StoreUserConverter {
 
         return StoreUserEntity.builder()
                 .email(request.getEmail())
-                .role(request.getRole())
                 .password(request.getPassword())
                 .storeId(storeEntity.getId())
                 .build();

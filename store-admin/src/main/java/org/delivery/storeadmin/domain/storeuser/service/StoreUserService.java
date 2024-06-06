@@ -3,6 +3,7 @@ package org.delivery.storeadmin.domain.storeuser.service;
 import lombok.RequiredArgsConstructor;
 import org.delivery.db.storeuser.StoreUserEntity;
 import org.delivery.db.storeuser.StoreUserRepository;
+import org.delivery.db.storeuser.enums.StoreUserRole;
 import org.delivery.db.storeuser.enums.StoreUserStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ public class StoreUserService {
     private final PasswordEncoder passwordEncoder;
 
     public StoreUserEntity register(StoreUserEntity storeUserEntity){
+        storeUserEntity.setRole(StoreUserRole.ADMIN);
         storeUserEntity.setStatus(StoreUserStatus.REGISTERED);
         storeUserEntity.setPassword(passwordEncoder.encode(storeUserEntity.getPassword()));
         storeUserEntity.setRegisteredAt(LocalDateTime.now());
