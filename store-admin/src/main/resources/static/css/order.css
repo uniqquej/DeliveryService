@@ -1,0 +1,49 @@
+
+@font-face {
+    font-family: 'SUITE-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BagelFatOne-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_JAMO@1.0/BagelFatOne-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+*{
+    font-family: 'SUITE-Regular';
+}
+
+.logo {
+    font-size: 40px;
+    text-decoration: none;
+    color: rgb(238, 99, 99);
+    margin-left: 5px;
+    margin-right: 5px;
+    font-family:"BagelFatOne-Regular";
+}
+
+body{
+    max-width : 500px;
+    width : 80%;
+    height : 100vh;
+    margin : auto;
+
+}
+.orderInfo {
+    height : 30%;
+    box-shadow: 5px 5px 5px rgb(196, 193, 193);
+}
+
+.orderStatus {
+    margin-top : 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.orderStatus > span{
+    margin-top : 5px;
+}

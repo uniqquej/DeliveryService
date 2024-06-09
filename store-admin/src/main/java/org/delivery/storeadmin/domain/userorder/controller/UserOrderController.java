@@ -36,5 +36,11 @@ public class UserOrderController {
         return new ResponseEntity<Long>(orderId, HttpStatus.OK);
     }
 
-
+    @GetMapping("/id/{orderId}")
+    public String detailOrder(@PathVariable Long orderId, Model model){
+        var detailResponse = userOrderBusiness.orderDetail(orderId);
+        model.addAttribute("order",detailResponse.getUserOrderResponse());
+        model.addAttribute("orderMenuList", detailResponse.getUserOrderMenuResponseList());
+       return "order/orderDetail";
+    }
 }
