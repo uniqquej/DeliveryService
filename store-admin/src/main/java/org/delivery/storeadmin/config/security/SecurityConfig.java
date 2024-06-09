@@ -51,18 +51,6 @@ public class SecurityConfig {
                     .defaultSuccessUrl("/main")
             );
 
-        http.cors(corsCustomizer->corsCustomizer.configurationSource(new CorsConfigurationSource() {
-            @Override
-            public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
-                CorsConfiguration config = new CorsConfiguration();
-                config.setAllowedOrigins(Collections.singletonList("http://localhost:5500"));
-                config.setAllowedMethods(Arrays.asList("GET","POST"));
-                config.setAllowCredentials(true);
-                config.setAllowedHeaders(Collections.singletonList("*"));
-                return config;
-            }
-        }));
-
         return http.build();
     }
 

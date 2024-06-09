@@ -1,9 +1,6 @@
 package org.delivery.storeadmin.domain.userorder.controller.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.delivery.db.userorder.enums.UserOrderStatus;
 import org.delivery.storeadmin.domain.storemenu.controller.model.StoreMenuResponse;
 import org.delivery.storeadmin.domain.userordermenu.controller.model.UserOrderMenuResponse;
@@ -16,6 +13,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class UserOrderDetailResponse {
     private UserOrderResponse userOrderResponse;
     private List<UserOrderMenuResponse> userOrderMenuResponseList;

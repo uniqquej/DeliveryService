@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <script th:inline="javascript">
+        let dataList = [];
+        // SSE 연결
+        const url = "http://localhost:8081/api/sse/connect";    // 접속주소
+        const eventSource = new EventSource(url);               // sse 연결
+
+        eventSource.onopen = event => {
+            console.log("sse connection")
+            console.log(dataList)
+        }
+
+        eventSource.onmessage = event => {
+            console.log("receive : "+event.data);
+            const data = JSON.parse(event.data);
+<!--            dataList.unshift(data);-->
+<!--            console.log("list : ",dataList);-->
+        }
+    </script>
+</head>
+<body>
+<h2>home</h2>
+
+</body>
+</html>

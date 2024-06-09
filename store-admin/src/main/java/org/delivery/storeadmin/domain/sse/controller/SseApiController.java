@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.delivery.storeadmin.domain.authorization.model.UserSession;
 import org.delivery.storeadmin.domain.sse.connection.SseConnectionPool;
-import org.delivery.storeadmin.domain.sse.connection.model.UserSessionConnection;
+import org.delivery.storeadmin.domain.sse.connection.model.UserSseConnection;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +16,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter
 
 import java.util.Optional;
 
-@Slf4j
+@Slf4j(topic = "sse api controller")
 @RequiredArgsConstructor
 @RequestMapping("/api/sse")
 @RestController
@@ -31,7 +31,7 @@ public class SseApiController {
     ){
         log.info("login user {}", userSession);
 
-        var userSseConnection = UserSessionConnection.connect(
+        var userSseConnection = UserSseConnection.connect(
                 userSession.getStoreId().toString(),
                 sseConnectionPool,
                 objectMapper
