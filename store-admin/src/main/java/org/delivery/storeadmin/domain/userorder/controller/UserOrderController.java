@@ -23,7 +23,10 @@ public class UserOrderController {
     private final UserOrderBusiness userOrderBusiness;
 
     @GetMapping(path = "/", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public String orderInfo(@AuthenticationPrincipal UserSession userSession, Model model){
+    public String orderInfo(
+            @AuthenticationPrincipal UserSession userSession,
+            Model model
+    ){
         List<UserOrderResponse> orderList = userOrderBusiness.getOrdersByStoreId(userSession.getStoreId());
         model.addAttribute("orderList",orderList);
 
@@ -31,13 +34,26 @@ public class UserOrderController {
     }
 
     @PostMapping("/id/{orderId}")
-    public @ResponseBody ResponseEntity updateOrder(@PathVariable Long orderId){
+    public @ResponseBody ResponseEntity updateOrder(
+            @PathVariable(name = "orderId") Long orderId
+    ){
         userOrderBusiness.updateOrderState(orderId);
         return new ResponseEntity<Long>(orderId, HttpStatus.OK);
     }
 
+    @PostMapping("")
+    public @ResponseBody ResponseEntity deleteOrder(
+            @RequestParam(name = "id") Long orderId
+    ){
+        userOrderBusiness.deleteOrder(orderId);
+        return new ResponseEntity<Long>(orderId, HttpStatus.OK);
+    }
+
     @GetMapping("/id/{orderId}")
-    public String detailOrder(@PathVariable Long orderId, Model model){
+    public String detailOrder(
+            @PathVariable(name = "orderId") Long orderId,
+            Model model
+    ){
         var detailResponse = userOrderBusiness.orderDetail(orderId);
         model.addAttribute("order",detailResponse.getUserOrderResponse());
         model.addAttribute("orderMenuList", detailResponse.getUserOrderMenuResponseList());

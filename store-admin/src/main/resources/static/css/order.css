@@ -27,23 +27,37 @@
 }
 
 body{
-    max-width : 500px;
-    width : 80%;
+    max-width : 700px;
+    width : 90%;
     height : 100vh;
     margin : auto;
-
 }
 .orderInfo {
     height : 30%;
     box-shadow: 5px 5px 5px rgb(196, 193, 193);
+    font-size : 23px;
+}
+
+#orderListBox{
+    width : 100%;
 }
 
 .orderStatus {
-    margin-top : 10px;
+    margin-top : 20px;
     display: flex;
     flex-direction: column;
+    font-size : 20px;
 }
 
 .orderStatus > span{
-    margin-top : 5px;
+    margin-top : 10px;
+}
+
+.btnBox{
+    display: flex;
+    flex-direction : row;
+}
+
+.btnBox > button {
+    margin-right : 10px;
 }

@@ -48,7 +48,7 @@ public class SecurityConfig {
             .formLogin(form->
                     form
                     .loginPage("/store-user/login").permitAll()
-                    .defaultSuccessUrl("/main")
+                    .defaultSuccessUrl("/store-order/")
             );
 
         return http.build();

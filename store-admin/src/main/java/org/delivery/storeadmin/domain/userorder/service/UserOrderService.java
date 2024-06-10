@@ -39,6 +39,13 @@ public class UserOrderService {
         return userOrderEntity;
     }
 
+    @Transactional
+    public UserOrderEntity deleteOrder(Long userOrderId){
+        var userOrderEntity = getUserOrder(userOrderId).get();
+        userOrderEntity.setStatus(UserOrderStatus.CANCELED);
+        return userOrderEntity;
+    }
+
     public List<UserOrderEntity> getOrdersByStoreId(Long storeId){
         List<UserOrderStatus> statusList = List.of(
                 UserOrderStatus.ORDER,
@@ -49,4 +56,6 @@ public class UserOrderService {
 
         return userOrderRepository.findAllByStoreIdAndStatusInOrderByIdDesc(storeId, statusList);
     }
+
+
 }

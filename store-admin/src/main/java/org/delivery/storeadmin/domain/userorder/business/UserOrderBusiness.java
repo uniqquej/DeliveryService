@@ -71,6 +71,12 @@ public class UserOrderBusiness {
         return userOrderResponse;
     }
 
+    public UserOrderResponse deleteOrder(Long userOrderId) {
+        var userOrderEntity = userOrderService.deleteOrder(userOrderId);
+        var userOrderResponse = userOrderConverter.toResponse(userOrderEntity);
+        return userOrderResponse;
+    }
+
     public UserOrderDetailResponse orderDetail(Long orderId) {
         var userOrderEntity = userOrderService.getUserOrder(orderId)
                 .orElseThrow(() -> new RuntimeException("사용자 주문 내역 없음"));

@@ -10,7 +10,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 </head>
 <body>
-    <span class="logo" th:ref="@{/store-order/}" >Delivery</span>
+    <a class="logo" href="/store-order/" >Delivery</a>
 
     <div>
         <div class="orderInfo text-center">
@@ -34,8 +34,8 @@
             </div>
             <span th:text="'주문 시간 :' +${#temporals.format(order.orderedAt,'yyyy-MM-dd HH:mm')}"></span>
             <span th:if="${order.acceptedAt!=null}" th:text="'수락 시간 :' +${#temporals.format(order.acceptedAt,'yyyy-MM-dd HH:mm')}"></span>
-            <span th:if="${order.cookingStartedAt!=null}" th:text="'조리 시간 :' +${#temporals.format(order.cookingStartedAt,'yyyy-MM-dd HH:mm')}"></span>
-            <span th:if="${order.deliveryStartedAt!=null}" th:text="'배달 시간 :' +${#temporals.format(order.deliveryStartedAt,'yyyy-MM-dd HH:mm')}"></span>
+            <span th:if="${order.cookingStartedAt!=null}" th:text="'조리 시작 :' +${#temporals.format(order.cookingStartedAt,'yyyy-MM-dd HH:mm')}"></span>
+            <span th:if="${order.deliveryStartedAt!=null}" th:text="'배달 시작 :' +${#temporals.format(order.deliveryStartedAt,'yyyy-MM-dd HH:mm')}"></span>
         </div>
     </div>
 
