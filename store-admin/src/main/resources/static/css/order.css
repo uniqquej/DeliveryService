@@ -1,20 +1,10 @@
-
-
-body{
-    max-width : 700px;
-    width : 90%;
-    height : 100vh;
-    margin : auto;
-}
 .orderInfo {
     height : 30%;
     box-shadow: 5px 5px 5px rgb(196, 193, 193);
     font-size : 23px;
 }
 
-#orderListBox{
-    width : 100%;
-}
+
 
 .orderStatus {
     margin-top : 20px;
@@ -34,10 +24,4 @@ body{
 
 .btnBox > button {
     margin-right : 10px;
-}
-.orderLink {
-    font-size: 21px;
-    text-decoration: none;
-    color : black;
-    margin-right : 8px;
 }

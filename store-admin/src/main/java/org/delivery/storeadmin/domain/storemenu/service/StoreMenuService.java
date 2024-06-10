@@ -6,6 +6,8 @@ import org.delivery.db.storemenu.StoreMenuRepository;
 import org.delivery.db.storemenu.enums.StoreMenuStatusEnum;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class StoreMenuService {
@@ -14,5 +16,9 @@ public class StoreMenuService {
     public StoreMenuEntity getStoreMenuWithThrow(Long id){
         return storeMenuRepository.findFirstByIdAndStatusOrderByIdDesc(id, StoreMenuStatusEnum.REGISTERED)
                 .orElseThrow(()->new RuntimeException(("메뉴를 찾지 못했습니다.")));
+    }
+
+    public List<StoreMenuEntity> getStoreMenuByStoreId(Long storeId){
+        return storeMenuRepository.findAllByStoreIdAndStatusOrderBySequenceDesc(storeId,StoreMenuStatusEnum.REGISTERED);
     }
 }
