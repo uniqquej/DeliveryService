@@ -42,7 +42,7 @@ public class UserOrderService {
     @Transactional
     public UserOrderEntity deleteOrder(Long userOrderId){
         var userOrderEntity = getUserOrder(userOrderId).get();
-        userOrderEntity.setStatus(UserOrderStatus.CANCELED);
+        userOrderEntity.setStatus(UserOrderStatus.CANCELLED);
         return userOrderEntity;
     }
 

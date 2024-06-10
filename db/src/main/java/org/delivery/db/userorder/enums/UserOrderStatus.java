@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 public enum UserOrderStatus {
     REGISTERED("등록"),
     UNREGISTERED("해지"),
-    CANCELED("취소"),
+    CANCELLED("취소"),
     ORDER("주문"),
     ACCEPT("확인"),
     COOKING("조리시작"),
