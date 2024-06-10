@@ -22,12 +22,17 @@ import java.util.List;
 public class UserOrderController {
     private final UserOrderBusiness userOrderBusiness;
 
-    @GetMapping(path = "/", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @GetMapping(path = "", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public String orderInfo(
             @AuthenticationPrincipal UserSession userSession,
+            @RequestParam(name = "status", required = false) String status,
             Model model
     ){
-        List<UserOrderResponse> orderList = userOrderBusiness.getOrdersByStoreId(userSession.getStoreId());
+        List<UserOrderResponse> orderList;
+        if(status != null )
+            orderList = userOrderBusiness.getCancelledOrdersByStoreId(userSession.getStoreId());
+        else orderList = userOrderBusiness.getOrdersByStoreId(userSession.getStoreId());
+
         model.addAttribute("orderList",orderList);
 
         return "home";

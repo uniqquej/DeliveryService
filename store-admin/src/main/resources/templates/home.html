@@ -39,7 +39,11 @@
     <script type="text/javascript" th:src="@{/js/order.js}"></script>
 </th:block>
 <div layout:fragment="content">
-    <h2 class="text-center">주문 내역 관리</h2>
+    <div>
+        <h2 class="text-center">주문 내역 관리</h2>
+        <a th:href="@{/store-order(status='cancel')}"> 취소된 주문</a>
+        <a th:href="@{/store-order}"> 진행 중인 주문</a>
+    </div>
     <div id="orderListBox">
         <table class="table">
             <colgroup>
@@ -67,13 +71,14 @@
                     <span th:text="${#temporals.format(orderInfo.orderedAt, 'yyyy-MM-dd HH:mm')}"></span>
                 </td>
                 <td>
-                    <div class="btnBox">
+                    <div class="btnBox" th:if="${orderInfo.cancelledAt==null}">
                         <button class="btn btn-secondary" th:if="${orderInfo.acceptedAt==null}" th:value="${orderInfo.id}" onclick="deleteOrder(this.value)">주문 취소</button>
                         <button class="btn btn-dark" th:if="${orderInfo.acceptedAt==null}" th:value="${orderInfo.id}" onclick="acceptOrder(this.value)">수락</button>
                         <button class="btn btn-dark" th:if="${orderInfo.cookingStartedAt==null and orderInfo.acceptedAt!=null }" th:value="${orderInfo.id}" onclick="acceptOrder(this.value)">조리 시작</button>
                         <button class="btn btn-dark" th:if="${orderInfo.deliveryStartedAt==null and orderInfo.cookingStartedAt!=null}" th:value="${orderInfo.id}" onclick="acceptOrder(this.value)">배달 시작</button>
                         <span th:if="${orderInfo.deliveryStartedAt!=null}" th:text="${#temporals.format(orderInfo.deliveryStartedAt, 'yyyy-MM-dd HH:mm') + '   배달 시작'}"></span>
                     </div>
+                    <span th:unless="${orderInfo.cancelledAt==null}">취소된 주문입니다.</span>
                 </td>
             </tr>
             </tbody>

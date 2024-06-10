@@ -44,4 +44,6 @@ public class UserOrderEntity extends BaseEntity {
 
     private LocalDateTime receivedAt;
 
+    private LocalDateTime cancelledAt;
+
 }

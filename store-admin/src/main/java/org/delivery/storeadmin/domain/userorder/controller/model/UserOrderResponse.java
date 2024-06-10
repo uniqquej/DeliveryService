@@ -24,5 +24,6 @@ public class UserOrderResponse {
     private LocalDateTime cookingStartedAt;
     private LocalDateTime deliveryStartedAt;
     private LocalDateTime receivedAt;
+    private LocalDateTime cancelledAt;
 }
 

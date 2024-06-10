@@ -18,6 +18,7 @@ public class UserOrderConverter {
                 .cookingStartedAt(userOrderEntity.getCookingStartedAt())
                 .deliveryStartedAt(userOrderEntity.getDeliveryStartedAt())
                 .receivedAt(userOrderEntity.getReceivedAt())
+                .cancelledAt(userOrderEntity.getCancelledAt())
                 .build();
     }
 }

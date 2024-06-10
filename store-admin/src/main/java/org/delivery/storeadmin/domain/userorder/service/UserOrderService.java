@@ -42,6 +42,7 @@ public class UserOrderService {
     @Transactional
     public UserOrderEntity deleteOrder(Long userOrderId){
         var userOrderEntity = getUserOrder(userOrderId).get();
+        userOrderEntity.setCancelledAt(LocalDateTime.now());
         userOrderEntity.setStatus(UserOrderStatus.CANCELLED);
         return userOrderEntity;
     }
@@ -55,6 +56,11 @@ public class UserOrderService {
         );
 
         return userOrderRepository.findAllByStoreIdAndStatusInOrderByIdDesc(storeId, statusList);
+    }
+
+    public List<UserOrderEntity> getCancelledOrdersByStoreId(Long storeId){
+
+        return userOrderRepository.findAllByStoreIdAndStatusOrderByIdDesc(storeId, UserOrderStatus.CANCELLED);
     }
 
 

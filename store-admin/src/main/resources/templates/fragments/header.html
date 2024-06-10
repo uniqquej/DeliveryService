@@ -4,23 +4,23 @@
 
 <div th:fragment="header">
     <nav class="navbar">
-        <a class="logo" href="/store-order/">Delivery</a>
+        <a class="logo" href="/store-order">Delivery</a>
             <ul>
                 <li sec:authorize="hasAnyAuthority('ROLE_MASTER')">
-                    <a class="navLink" href="/store/register">가게 등록</a>
+                    <a class="navLink" th:href="@{/master/store}">가게 등록</a>
                 </li>
                 <li sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
-                    <a class="navLink" href="/store-order/">주문 관리</a>
+                    <a class="navLink" th:href="@{/store-order}">주문 관리</a>
                 </li>
                 <li sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
-                    <a class="navLink" href="/store-menu/">메뉴 관리</a>
+                    <a class="navLink" th:href="@{/store-menu}">메뉴 관리</a>
                 </li>
 
                 <li sec:authorize="isAnonymous()">
-                    <a class="navLink" href="/user/login">로그인</a>
+                    <a class="navLink" th:href="@{/store-user/login}">로그인</a>
                 </li>
                 <li sec:authorize="isAuthenticated()">
-                    <a class="navLink" href="/user/logout">로그아웃</a>
+                    <a class="navLink"  th:href="@{/store-user/logout}">로그아웃</a>
                 </li>
             </ul>
     </nav>

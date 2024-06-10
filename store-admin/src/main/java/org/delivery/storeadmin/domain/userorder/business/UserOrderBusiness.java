@@ -65,6 +65,12 @@ public class UserOrderBusiness {
         return responseList;
     }
 
+    public List<UserOrderResponse> getCancelledOrdersByStoreId(Long storeId) {
+        var entityList = userOrderService.getCancelledOrdersByStoreId(storeId);
+        var responseList = entityList.stream().map(userOrderConverter::toResponse).toList();
+        return responseList;
+    }
+
     public UserOrderResponse updateOrderState(Long userOrderId) {
         var userOrderEntity = userOrderService.updateOrderState(userOrderId);
         var userOrderResponse = userOrderConverter.toResponse(userOrderEntity);
