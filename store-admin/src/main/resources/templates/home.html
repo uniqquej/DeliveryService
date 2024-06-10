@@ -41,8 +41,8 @@
 <div layout:fragment="content">
     <div>
         <h2 class="text-center">주문 내역 관리</h2>
-        <a th:href="@{/store-order(status='cancel')}"> 취소된 주문</a>
-        <a th:href="@{/store-order}"> 진행 중인 주문</a>
+        <a class="orderLink" th:href="@{/store-order(status='cancel')}"> 취소된 주문</a>
+        <a class="orderLink" th:href="@{/store-order}"> 진행 중인 주문</a>
     </div>
     <div id="orderListBox">
         <table class="table">

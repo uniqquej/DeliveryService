@@ -1,5 +1,6 @@
 package org.delivery.storeadmin.config.security;
 
+import org.delivery.db.storeuser.enums.StoreUserRole;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,6 +35,9 @@ public class SecurityConfig {
                     .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                     .requestMatchers(SWAGGER.toArray(new String[0])).permitAll()
                     .requestMatchers("/open-api/**").permitAll()
+                    .requestMatchers("/store-order/**").hasRole(StoreUserRole.ADMIN.toString())
+                    .requestMatchers("/store-menu/**").hasRole(StoreUserRole.ADMIN.toString())
+                    .requestMatchers("/master/**").hasRole(StoreUserRole.MASTER.toString())
                     .anyRequest().authenticated();
             });
 
@@ -41,7 +45,11 @@ public class SecurityConfig {
             .formLogin(form->
                     form
                     .loginPage("/store-user/login").permitAll()
-                    .defaultSuccessUrl("/store-order/")
+                    .defaultSuccessUrl("/store-order")
+            );
+        http
+            .logout(it->
+                    it.logoutSuccessUrl("/store-user/login")
             );
 
         return http.build();
