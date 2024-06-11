@@ -27,4 +27,8 @@ public class StoreUserApi {
         new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
         return "redirect:/store-user/login";
     }
+    @GetMapping("/error/forbidden")
+    public String error(){
+        return "error/forbidden";
+    }
 }

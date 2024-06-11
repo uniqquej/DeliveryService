@@ -10,15 +10,50 @@
 </th:block>
 
 <th:block layout:fragment="script">
+    <script th:inline="javascript">
+    function bindDomEvent(){
+        $(".custom-file-input").on("change", function() {
+            var fileName = $(this).val().split("\\").pop();  //이미지 파일명
+            var fileExt = fileName.substring(fileName.lastIndexOf(".")+1); // 확장자 추출
+            fileExt = fileExt.toLowerCase(); //소문자 변환
 
+            if(fileExt != "jpg" && fileExt != "jpeg" && fileExt != "gif" && fileExt != "png" && fileExt != "bmp"){
+            alert("이미지 파일만 등록이 가능합니다.");
+            return;
+            }
+
+            $(this).siblings(".custom-file-label").html(fileName);
+            });
+    }
+    </script>
 </th:block>
 
 <div layout:fragment="content">
     <div>
         <h2 class="text-center">메뉴 등록</h2>
     </div>
-    <div id="menuListBox">
-
-    </div>
+    <form method="post" role="form" enctype="multipart/form-data" th:object="${menuRegisterRequest}">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text">메뉴 이름</span>
+            </div>
+            <input type="text" th:field="*{name}" class="form-control" placeholder="메뉴 이름을 입력해주세요">
+        </div>
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text">가격</span>
+            </div>
+            <input type="text" th:field="*{amount}" class="form-control" placeholder="메뉴의 가격을 입력해주세요">
+        </div>
+        <div class="form-group" >
+            <div class="custom-file img-div">
+                <input type="file" class="custom-file-input" name="menuImgFile">
+                <label class="custom-file-label" th:text="메뉴이미지"></label>
+            </div>
+        </div>
+        <div style="text-align: center">
+            <button th:formaction="@{/store-menu/register}" type="submit" class="btn btn-primary">저장</button>
+        </div>
+    </form>
 </div>
 </html>

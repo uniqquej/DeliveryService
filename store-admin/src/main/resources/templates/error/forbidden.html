@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/nav}">
+
+<th:block layout:fragment="css">
+    .errorCode {
+        color : red;
+    }
+
+</th:block>
+
+<div layout:fragment="content" class="text-center">
+    <h2 class="errorCode">403 error</h2>
+    <h3 class="errorMsg">페이지 접근 권한이 없습니다.</h3>
+</div>
+</html>

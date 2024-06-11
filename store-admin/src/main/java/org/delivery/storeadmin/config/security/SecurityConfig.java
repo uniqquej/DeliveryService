@@ -52,6 +52,11 @@ public class SecurityConfig {
                     it.logoutSuccessUrl("/store-user/login")
             );
 
+        http
+            .exceptionHandling(
+                    it->it.accessDeniedPage("/store-user/error/forbidden")
+            );
+
         return http.build();
     }
 
