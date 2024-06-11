@@ -21,8 +21,7 @@ public class StoreConverter {
                             .address(request.getAddress())
                             .category(request.getCategory())
                             .thumbnailUrl(request.getThumbnailUrl())
-                            .minimumAmount(request.getMinimumAmount())
-                            .minimumDeliveryAmount(request.getMinimumDeliveryAmount())
+                            .minimumDeliveryPrice(request.getMinimumDeliveryPrice())
                             .phoneNumber(request.getPhoneNumber())
                             .build();
 
@@ -40,8 +39,7 @@ public class StoreConverter {
                             .category(entity.getCategory())
                             .status(entity.getStatus())
                             .star(entity.getStar())
-                            .minimumAmount(entity.getMinimumAmount())
-                            .minimumDeliveryAmount(entity.getMinimumDeliveryAmount())
+                            .minimumDeliveryPrice(entity.getMinimumDeliveryPrice())
                             .thumbnailUrl(entity.getThumbnailUrl())
                             .phoneNumber(entity.getPhoneNumber())
                             .build();

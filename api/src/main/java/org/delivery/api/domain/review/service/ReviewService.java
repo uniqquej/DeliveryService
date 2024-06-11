@@ -10,6 +10,10 @@ import org.delivery.api.domain.user.model.User;
 import org.delivery.db.review.ReviewEntity;
 import org.delivery.db.review.ReviewRepository;
 import org.delivery.db.review.enums.ReviewStatus;
+import org.delivery.db.store.StoreRepository;
+import org.delivery.db.user.UserRepository;
+import org.delivery.db.user.enums.UserStatus;
+import org.delivery.db.userorder.UserOrderRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -20,12 +24,27 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ReviewService {
     private final ReviewRepository reviewRepository;
+    private final UserRepository userRepository;
+    private final UserOrderRepository userOrderRepository;
+    private final StoreRepository storeRepository;
 
-    public ReviewEntity register(ReviewEntity reviewEntity){
+    public ReviewEntity register(ReviewEntity reviewEntity, User user, Long userOrderId, Long storeId){
+        var userEntity = userRepository.findFirstByIdAndStatusOrderByIdDesc(user.getId(), UserStatus.REGISTERED)
+                .orElseThrow(()->new ApiException(UserErrorCode.USER_NOT_FOUND));
+
+        var userOrderEntity = userOrderRepository.findById(userOrderId)
+                .orElseThrow(()->new ApiException(ErrorCode.NULL_POINT));
+
+        var storeEntity = storeRepository.findById(storeId)
+                .orElseThrow(()->new ApiException(ErrorCode.NULL_POINT));
+
         return Optional.ofNullable(reviewEntity)
                 .map(it->{
                    reviewEntity.setRegisteredAt(LocalDateTime.now());
+                   reviewEntity.setUser(userEntity);
                    reviewEntity.setStatus(ReviewStatus.REGISTERED);
+                   reviewEntity.setUserOrder(userOrderEntity);
+                   reviewEntity.setStore(storeEntity);
                     return reviewRepository.save(reviewEntity);
                 })
                 .orElseThrow(()->new ApiException(ErrorCode.NULL_POINT));
@@ -50,7 +69,7 @@ public class ReviewService {
         var originReview = reviewRepository.findById(reviewId)
                 .orElseThrow(()->new ApiException(ErrorCode.NULL_POINT));
 
-        if(originReview.getUserId() != user.getId())
+        if(originReview.getUser().getId() != user.getId())
             throw new ApiException(UserErrorCode.AUTHENTICATION_ERROR);
 
         originReview.setContent(request.getContent());

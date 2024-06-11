@@ -31,16 +31,4 @@ public class StoreMenuApiController {
         return Api.OK(response);
     }
 
-    @PostMapping("/register")
-    public Api<StoreMenuResponse> register(
-            @RequestBody @Valid Api<StoreMenuRegisterRequest> request,
-            @Parameter(hidden = true) @UserSession User user
-    ){
-//        if(user.getRole() != UserRole.ADMIN)
-//            throw new IllegalArgumentException("잘못된 접근");
-
-        var response = storeMenuBusiness.register(request.getBody());
-        return Api.OK(response);
-    }
-
 }

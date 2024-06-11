@@ -9,7 +9,6 @@ import org.delivery.db.storemenu.enums.StoreMenuStatusEnum;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,15 +22,6 @@ public class StoreMenuService {
 
     public List<StoreMenuEntity> getStoreMenuByStoreId(Long storeId){
         return storeMenuRepository.findAllByStoreIdAndStatusOrderBySequenceDesc(storeId, StoreMenuStatusEnum.REGISTERED);
-    }
-
-    public StoreMenuEntity register(StoreMenuEntity storeMenu){
-        return Optional.ofNullable(storeMenu)
-                .map(it->{
-                    it.setStatus(StoreMenuStatusEnum.REGISTERED);
-                    return storeMenuRepository.save(it);
-                })
-                .orElseThrow(()->new ApiException(ErrorCode.NULL_POINT));
     }
 
 }

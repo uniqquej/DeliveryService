@@ -2,10 +2,18 @@ package org.delivery.api.domain.userorder.service;
 
 import lombok.RequiredArgsConstructor;
 import org.delivery.api.common.error.ErrorCode;
+import org.delivery.api.common.error.UserErrorCode;
 import org.delivery.api.common.exception.ApiException;
+import org.delivery.api.domain.user.model.User;
+import org.delivery.db.store.StoreRepository;
+import org.delivery.db.store.enums.StoreStatus;
+import org.delivery.db.user.UserEntity;
+import org.delivery.db.user.UserRepository;
+import org.delivery.db.user.enums.UserStatus;
 import org.delivery.db.userorder.UserOrderEntity;
 import org.delivery.db.userorder.UserOrderRepository;
 import org.delivery.db.userorder.enums.UserOrderStatus;
+import org.delivery.db.userordermenu.UserOrderMenuEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,6 +24,24 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserOrderService {
     private final UserOrderRepository userOrderRepository;
+    private final UserRepository userRepository;
+    private final StoreRepository storeRepository;
+
+    public UserOrderEntity order(User user, List<UserOrderMenuEntity> userOrderMenuEntityList, Long storeId){
+        var userEntity = userRepository.findFirstByIdAndStatusOrderByIdDesc(user.getId(), UserStatus.REGISTERED)
+                .orElseThrow(()->new ApiException(UserErrorCode.USER_NOT_FOUND));
+
+        var storeEntity = storeRepository.findFirstByIdAndStatusOrderByIdDesc(storeId, StoreStatus.REGISTERED)
+                .orElseThrow(()->new ApiException(ErrorCode.NULL_POINT));
+
+        var orderEntity =  UserOrderEntity.createUserOrder(userEntity, userOrderMenuEntityList);
+        orderEntity.setOrderedAt(LocalDateTime.now());
+        orderEntity.setStatus(UserOrderStatus.ORDER);
+        orderEntity.setTotalPrice(orderEntity.getTotalPrice());
+        orderEntity.setStore(storeEntity);
+        userOrderRepository.save(orderEntity);
+        return orderEntity;
+    }
 
     public UserOrderEntity getUserOrderWithOutStatusWithThrow(Long id, Long userId){
         var userOrder = userOrderRepository.findAllByIdAndUserId(id, userId)

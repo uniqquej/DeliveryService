@@ -13,5 +13,5 @@ import java.math.BigDecimal;
 public class UserOrderMenuResponse {
     private Long count;
     private String menuName;
-    private BigDecimal amount;
+    private BigDecimal price;
 }

@@ -15,6 +15,10 @@ import org.delivery.api.domain.userorder.producer.UserOrderProducer;
 import org.delivery.api.domain.userorder.service.UserOrderService;
 import org.delivery.api.domain.userordermenu.converter.UserOrderMenuConverter;
 import org.delivery.api.domain.userordermenu.service.UserOrderMenuService;
+import org.delivery.db.user.UserEntity;
+import org.delivery.db.userorder.UserOrderEntity;
+import org.delivery.db.userordermenu.UserOrderMenuEntity;
+import org.springframework.core.annotation.Order;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -24,7 +28,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class UserOrderBusiness {
     private final UserOrderConverter userOrderConverter;
     private final StoreConverter storeConverter;
-    private final StoreMenuConverter storeMenuConverter;
 
     private final UserOrderService userOrderService;
     private final StoreMenuService storeMenuService;
@@ -41,26 +44,13 @@ public class UserOrderBusiness {
                 it-> storeMenuService.getStoreMenuWithThrow(it)
         ).toList();
 
-        var userOrderEntity = userOrderConverter.toEntity(user, storeMenuEntityList, request.getCountList(),request.getStoreId());
-        var savedEntity = userOrderService.order(userOrderEntity);
-
-        var countList = request.getCountList();
-        AtomicInteger index = new AtomicInteger(0);
-        var userOrderMenuEntityList = storeMenuEntityList.stream()
-                .map(it-> {
-                    int currentIndex = index.getAndIncrement();
-                   var userOrderMenuEntity = userOrderMenuConverter.toEntity(savedEntity, it, countList.get(currentIndex));
-                   return userOrderMenuEntity;
-                }).toList();
-
-        userOrderMenuEntityList.forEach(it->{
-            userOrderMenuService.order(it);
-        });
+        List<UserOrderMenuEntity> orderMenuEntityList = userOrderMenuService.order(storeMenuEntityList, request.getCountList());
+        UserOrderEntity orderEntity = userOrderService.order(user, orderMenuEntityList, request.getStoreId());
 
         //비동기로 가맹점에 주문 알림
-        userOrderProducer.sendOrder(savedEntity);
+        userOrderProducer.sendOrder(orderEntity);
 
-        return userOrderConverter.toResponse(savedEntity);
+        return userOrderConverter.toResponse(orderEntity);
     }
 
     public List<UserOrderDetailResponse> currentOrders(User user) {
@@ -70,12 +60,12 @@ public class UserOrderBusiness {
 
             var userOrderMenuEntityList = userOrderMenuService.getUserOrderMenu(userOrderEntity.getId());
             var storeMenuEntityList = userOrderMenuEntityList.stream().map(userOrderMenuEntity->{
-                var storeMenuEntity =  storeMenuService.getStoreMenuWithThrow(userOrderMenuEntity.getStoreMenuId());
+                var storeMenuEntity =  storeMenuService.getStoreMenuWithThrow(userOrderMenuEntity.getMenu().getId());
                 return storeMenuEntity;
             }).toList();
 
             // 사용자가 주문한 스토어 todo 리팩토링 필요
-            var storeEntity = storeService.getStoreWithThrow(storeMenuEntityList.stream().findFirst().get().getStoreId());
+            var storeEntity = storeService.getStoreWithThrow(storeMenuEntityList.stream().findFirst().get().getStore().getId());
             return UserOrderDetailResponse.builder()
                     .userOrderResponse(userOrderConverter.toResponse(userOrderEntity))
                     .storeResponse(storeConverter.toResponse(storeEntity))
@@ -93,12 +83,12 @@ public class UserOrderBusiness {
 
             var userOrderMenuEntityList = userOrderMenuService.getUserOrderMenu(userOrderEntity.getId());
             var storeMenuEntityList = userOrderMenuEntityList.stream().map(userOrderMenuEntity->{
-                var storeMenuEntity =  storeMenuService.getStoreMenuWithThrow(userOrderMenuEntity.getStoreMenuId());
+                var storeMenuEntity =  storeMenuService.getStoreMenuWithThrow(userOrderMenuEntity.getMenu().getId());
                 return storeMenuEntity;
             }).toList();
 
             // 사용자가 주문한 스토어 todo 리팩토링 필요
-            var storeEntity = storeService.getStoreWithThrow(storeMenuEntityList.stream().findFirst().get().getStoreId());
+            var storeEntity = storeService.getStoreWithThrow(storeMenuEntityList.stream().findFirst().get().getStore().getId());
             return UserOrderDetailResponse.builder()
                     .userOrderResponse(userOrderConverter.toResponse(userOrderEntity))
                     .storeResponse(storeConverter.toResponse(storeEntity))
@@ -114,12 +104,12 @@ public class UserOrderBusiness {
 
         var userOrderMenuEntityList = userOrderMenuService.getUserOrderMenu(userOrderEntity.getId());
         var storeMenuEntityList = userOrderMenuEntityList.stream().map(userOrderMenuEntity->{
-            var storeMenuEntity =  storeMenuService.getStoreMenuWithThrow(userOrderMenuEntity.getStoreMenuId());
+            var storeMenuEntity =  storeMenuService.getStoreMenuWithThrow(userOrderMenuEntity.getMenu().getId());
             return storeMenuEntity;
         }).toList();
 
         // 사용자가 주문한 스토어 todo 리팩토링 필요
-        var storeEntity = storeService.getStoreWithThrow(storeMenuEntityList.stream().findFirst().get().getStoreId());
+        var storeEntity = storeService.getStoreWithThrow(storeMenuEntityList.stream().findFirst().get().getStore().getId());
         return UserOrderDetailResponse.builder()
                 .userOrderResponse(userOrderConverter.toResponse(userOrderEntity))
                 .storeResponse(storeConverter.toResponse(storeEntity))

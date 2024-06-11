@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.delivery.db.BaseEntity;
+import org.delivery.db.store.StoreEntity;
 import org.delivery.db.storemenu.enums.StoreMenuStatusEnum;
 
 import java.math.BigDecimal;
@@ -19,14 +20,15 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StoreMenuEntity extends BaseEntity {
-    @Column(nullable = false)
-    private Long storeId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="store_id")
+    private StoreEntity store;
 
     @Column(length = 100,nullable = false)
     private String name;
 
     @Column(precision = 11, scale = 4,nullable = false)
-    private BigDecimal amount;
+    private BigDecimal price;
 
     @Column(length = 50,nullable = false, columnDefinition = "varchar(50)")
     @Enumerated(EnumType.STRING)

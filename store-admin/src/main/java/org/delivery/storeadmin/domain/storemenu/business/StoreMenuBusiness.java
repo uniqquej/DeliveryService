@@ -1,6 +1,7 @@
 package org.delivery.storeadmin.domain.storemenu.business;
 
 import lombok.RequiredArgsConstructor;
+import org.delivery.storeadmin.domain.store.business.StoreBusiness;
 import org.delivery.storeadmin.domain.storemenu.controller.model.MenuRegisterRequest;
 import org.delivery.storeadmin.domain.storemenu.controller.model.StoreMenuResponse;
 import org.delivery.storeadmin.domain.storemenu.converter.StoreMenuConverter;
@@ -24,12 +25,18 @@ public class StoreMenuBusiness {
     private final StoreMenuService storeMenuService;
     private final StoreMenuConverter storeMenuConverter;
 
+    private final StoreBusiness storeBusiness;
+
     public List<StoreMenuResponse> getStoreMenuList(Long storeId){
+        var storeEntity = storeBusiness.getStoreWithThrow(storeId);
         var storeMenuEntityList = storeMenuService.getStoreMenuByStoreId(storeId);
-        return storeMenuEntityList.stream().map(storeMenuConverter::toResponse).toList();
+        return storeMenuEntityList.stream().map(it->{
+            return storeMenuConverter.toResponse(it, storeEntity);
+        }).toList();
     }
 
     public void registerMenu(Long storeId, MenuRegisterRequest menuRegisterRequest, MultipartFile menuImgFile) throws Exception {
+        var storeEntity = storeBusiness.getStoreWithThrow(storeId);
         String originImgName = menuImgFile.getOriginalFilename();
         String imgName = "";
         String imgUrl = "";
@@ -39,7 +46,7 @@ public class StoreMenuBusiness {
             imgUrl = "/images/menu/"+imgName;
         }
 
-        var storeMenuEntity = storeMenuConverter.toEntity(storeId, menuRegisterRequest,imgUrl);
+        var storeMenuEntity = storeMenuConverter.toEntity(storeEntity, menuRegisterRequest,imgUrl);
         storeMenuService.registerMenu(storeMenuEntity);
     }
 

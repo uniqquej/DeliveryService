@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.delivery.db.store.StoreEntity;
 import org.delivery.db.storemenu.enums.StoreMenuStatusEnum;
 
 import java.math.BigDecimal;
@@ -15,7 +16,7 @@ import java.math.BigDecimal;
 public class StoreMenuResponse {
     private Long id;
 
-    private Long storeId;
+    private StoreEntity store;
 
     private String name;
 

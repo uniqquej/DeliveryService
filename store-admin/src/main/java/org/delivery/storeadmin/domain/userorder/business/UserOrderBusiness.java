@@ -39,7 +39,7 @@ public class UserOrderBusiness {
         var userOrderMenuList = userOrderMenuService.getUserOrderMenu(userOrderMessage.getUserOrderId());
         var storeMenuList = userOrderMenuList.stream().map(
                 it -> {
-                    return storeMenuService.getStoreMenuWithThrow(it.getStoreMenuId());
+                    return storeMenuService.getStoreMenuWithThrow(it.getMenu().getId());
                 }).toList();
 
         var userOrderMenuResponseList = userOrderMenuConverter.toResponse(userOrderMenuList, storeMenuList);
@@ -52,7 +52,7 @@ public class UserOrderBusiness {
                 .build();
 
         try {
-            var userConnection = sseConnectionPool.getSession(userOrderEntity.getStoreId().toString());
+            var userConnection = sseConnectionPool.getSession(userOrderEntity.getStore().getId().toString());
             userConnection.sendMessage(push);
         } catch (Exception e) {
             log.error("userconnection error : {}", e);
@@ -90,7 +90,7 @@ public class UserOrderBusiness {
         var userOrderMenuList = userOrderMenuService.getUserOrderMenu(orderId);
         var storeMenuList = userOrderMenuList.stream().map(
                 it -> {
-                    return storeMenuService.getStoreMenuWithThrow(it.getStoreMenuId());
+                    return storeMenuService.getStoreMenuWithThrow(it.getMenu().getId());
                 }).toList();
 
         var userOrderMenuResponseList = userOrderMenuConverter.toResponse(userOrderMenuList, storeMenuList);

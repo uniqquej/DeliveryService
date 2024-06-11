@@ -26,9 +26,7 @@ public class StoreResponse {
 
     private String thumbnailUrl;
 
-    private BigDecimal minimumAmount;
-
-    private BigDecimal minimumDeliveryAmount;
+    private BigDecimal minimumDeliveryPrice;
 
     private String phoneNumber;
 }

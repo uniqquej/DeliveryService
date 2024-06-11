@@ -3,7 +3,6 @@ package org.delivery.api.domain.storemenu.controller.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.delivery.db.storemenu.enums.StoreMenuStatusEnum;
 
 import java.math.BigDecimal;
 
@@ -15,7 +14,7 @@ public class StoreMenuRegisterRequest {
 
     private String name;
 
-    private BigDecimal amount;
+    private BigDecimal price;
 
     private String thumbnailUrl;
 }

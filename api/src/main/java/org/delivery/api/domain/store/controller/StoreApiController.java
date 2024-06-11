@@ -11,7 +11,6 @@ import org.delivery.api.domain.store.controller.model.StoreRegisterRequest;
 import org.delivery.api.domain.store.controller.model.StoreResponse;
 import org.delivery.api.domain.user.model.User;
 import org.delivery.db.store.enums.StoreCategory;
-import org.delivery.db.user.enums.UserRole;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

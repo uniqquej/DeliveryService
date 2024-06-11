@@ -16,8 +16,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class UserOrderMenuConverter {
     public UserOrderMenuEntity toEntity(UserOrderEntity userOrderEntity, StoreMenuEntity storeMenuEntity, Long count){
         return UserOrderMenuEntity.builder()
-                .userOrderId(userOrderEntity.getId())
-                .storeMenuId(storeMenuEntity.getId())
+                .userOrder(userOrderEntity)
+                .menu(storeMenuEntity)
                 .count(count)
                 .build();
     }
@@ -26,7 +26,7 @@ public class UserOrderMenuConverter {
         return Optional.ofNullable(userOrderMenuEntity)
                 .map(it->{
                     return UserOrderMenuResponse.builder()
-                            .amount(storeMenuEntity.getAmount())
+                            .price(storeMenuEntity.getPrice())
                             .menuName(storeMenuEntity.getName())
                             .count(userOrderMenuEntity.getCount())
                             .build();

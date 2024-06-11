@@ -26,10 +26,7 @@ public class StoreRegisterRequest {
     private String thumbnailUrl;
 
     @NotNull
-    private BigDecimal minimumAmount;
-
-    @NotNull
-    private BigDecimal minimumDeliveryAmount;
+    private BigDecimal minimumDeliveryPrice;
 
     @NotBlank
     private String phoneNumber;

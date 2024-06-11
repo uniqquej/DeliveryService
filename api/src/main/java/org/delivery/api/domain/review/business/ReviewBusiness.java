@@ -19,8 +19,8 @@ public class ReviewBusiness {
     private final ReviewConverter reviewConverter;
 
     public ReviewResponse register(ReviewRegisterRequest request, User user){
-        var reviewEntity = reviewConverter.toEntity(request, user);
-        var savedEntity = reviewService.register(reviewEntity);
+        var reviewEntity = reviewConverter.toEntity(request);
+        var savedEntity = reviewService.register(reviewEntity, user, request.getUserOrderId(), request.getStoreId());
         return reviewConverter.toResponse(savedEntity);
     }
 

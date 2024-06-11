@@ -13,5 +13,5 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class MenuRegisterRequest {
     private String name;
-    private BigDecimal amount;
+    private BigDecimal price;
 }

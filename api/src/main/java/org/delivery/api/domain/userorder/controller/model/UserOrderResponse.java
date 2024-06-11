@@ -16,7 +16,7 @@ public class UserOrderResponse {
     private Long id;
     private Long storeId;
     private UserOrderStatus status;
-    private BigDecimal amount;
+    private BigDecimal totalPrice;
     private LocalDateTime orderedAt;
     private LocalDateTime acceptedAt;
     private LocalDateTime cookingStartedAt;

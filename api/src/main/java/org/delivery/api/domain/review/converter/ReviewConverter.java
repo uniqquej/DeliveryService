@@ -5,17 +5,15 @@ import org.delivery.api.domain.review.controller.model.ReviewRegisterRequest;
 import org.delivery.api.domain.review.controller.model.ReviewResponse;
 import org.delivery.api.domain.user.model.User;
 import org.delivery.db.review.ReviewEntity;
+import org.delivery.db.user.UserEntity;
 
 @Converter
 public class ReviewConverter {
 
-    public ReviewEntity toEntity(ReviewRegisterRequest request, User user){
+    public ReviewEntity toEntity(ReviewRegisterRequest request){
         return ReviewEntity.builder()
                 .content(request.getContent())
                 .star(request.getStar())
-                .userId(user.getId())
-                .storeId(request.getStoreId())
-                .userOrderId(request.getUserOrderId())
                 .build();
     }
 
@@ -25,9 +23,9 @@ public class ReviewConverter {
                 .content(reviewEntity.getContent())
                 .star(reviewEntity.getStar())
                 .status(reviewEntity.getStatus())
-                .userId(reviewEntity.getUserId())
-                .userOrderId(reviewEntity.getUserOrderId())
-                .storeId(reviewEntity.getStoreId())
+                .userId(reviewEntity.getUser().getId())
+                .userOrderId(reviewEntity.getUserOrder().getId())
+                .storeId(reviewEntity.getStore().getId())
                 .registeredAt(reviewEntity.getRegisteredAt())
                 .updatedAt(reviewEntity.getUpdatedAt())
                 .build();

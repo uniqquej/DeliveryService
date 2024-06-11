@@ -40,10 +40,7 @@ public class StoreEntity extends BaseEntity {
     private String thumbnailUrl;
 
     @Column(precision=11, scale = 4, nullable = false)
-    private BigDecimal minimumAmount;
-
-    @Column(precision=11, scale = 4, nullable = false)
-    private BigDecimal minimumDeliveryAmount;
+    private BigDecimal minimumDeliveryPrice;
 
     @Column(length = 20)
     private String phoneNumber;

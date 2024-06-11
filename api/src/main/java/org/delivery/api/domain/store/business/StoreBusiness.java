@@ -8,7 +8,7 @@ import org.delivery.api.domain.store.controller.model.StoreResponse;
 import org.delivery.api.domain.store.converter.StoreConverter;
 import org.delivery.api.domain.store.service.StoreService;
 import org.delivery.api.domain.storemenu.business.StoreMenuBusiness;
-import org.delivery.api.domain.storemenu.service.StoreMenuService;
+import org.delivery.db.store.StoreEntity;
 import org.delivery.db.store.enums.StoreCategory;
 
 import java.util.List;
@@ -44,5 +44,9 @@ public class StoreBusiness {
                 .store(storeResponse)
                 .menuList(menuList)
                 .build();
+    }
+
+    public StoreEntity getStoreWithThrow(Long storeId ){
+        return storeService.getStoreWithThrow(storeId);
     }
 }

@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.delivery.db.BaseEntity;
 import org.delivery.db.review.enums.ReviewStatus;
+import org.delivery.db.store.StoreEntity;
+import org.delivery.db.user.UserEntity;
+import org.delivery.db.userorder.UserOrderEntity;
 
 import java.time.LocalDateTime;
 
@@ -29,14 +32,17 @@ public class ReviewEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ReviewStatus status;
 
-    @Column(nullable = false)
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="user_id")
+    private UserEntity user;
 
-    @Column(nullable = false)
-    private Long storeId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="store_id")
+    private StoreEntity store;
 
-    @Column(nullable = false)
-    private Long userOrderId;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="order_id")
+    private UserOrderEntity userOrder;
 
     private LocalDateTime registeredAt;
     private LocalDateTime updatedAt;

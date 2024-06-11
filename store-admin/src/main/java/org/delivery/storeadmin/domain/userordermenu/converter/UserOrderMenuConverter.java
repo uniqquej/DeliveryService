@@ -20,7 +20,7 @@ public class UserOrderMenuConverter {
                     int currentIndex = index.getAndIncrement();
                     var storeMenuResponse = UserOrderMenuResponse.builder()
                             .menuName(storeMenuEntity.getName())
-                            .amount(storeMenuEntity.getAmount())
+                            .amount(storeMenuEntity.getPrice())
                             .count(userOrderMenuEntityList.get(currentIndex).getCount())
                             .build();
                     return storeMenuResponse;

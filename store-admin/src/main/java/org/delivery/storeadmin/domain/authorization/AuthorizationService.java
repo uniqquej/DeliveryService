@@ -20,7 +20,7 @@ public class AuthorizationService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         var storeUserEntity = storeUserService.getRegisterUser(username).get();
         var storeEntity = storeRepository.findFirstByIdAndStatusOrderByIdDesc(
-                storeUserEntity.getStoreId(), StoreStatus.REGISTERED
+                storeUserEntity.getStore().getId(), StoreStatus.REGISTERED
         ).get();
 
         if(storeUserEntity==null) throw new UsernameNotFoundException(username);

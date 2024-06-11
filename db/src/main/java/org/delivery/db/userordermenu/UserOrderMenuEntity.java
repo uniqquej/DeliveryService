@@ -7,6 +7,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.delivery.db.BaseEntity;
+import org.delivery.db.storemenu.StoreMenuEntity;
+import org.delivery.db.userorder.UserOrderEntity;
 import org.delivery.db.userordermenu.enums.UserOrderMenuStatus;
 
 @Entity
@@ -17,11 +19,13 @@ import org.delivery.db.userordermenu.enums.UserOrderMenuStatus;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserOrderMenuEntity extends BaseEntity {
-    @Column(nullable = false)
-    private Long userOrderId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
+    private UserOrderEntity userOrder;
 
-    @Column(nullable = false)
-    private Long storeMenuId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "menu_id")
+    private StoreMenuEntity menu;
 
     @Column(nullable = false)
     private Long count;
@@ -29,5 +33,13 @@ public class UserOrderMenuEntity extends BaseEntity {
     @Column(nullable = false, length = 50, columnDefinition = "varchar(50)")
     @Enumerated(EnumType.STRING)
     private UserOrderMenuStatus status;
+
+    public static UserOrderMenuEntity createUserOrderMenu(StoreMenuEntity storeMenuEntity, Long count){
+        UserOrderMenuEntity orderMenuEntity = new UserOrderMenuEntity();
+        orderMenuEntity.setMenu(storeMenuEntity);
+        orderMenuEntity.setCount(count);
+        orderMenuEntity.setStatus(UserOrderMenuStatus.REGISTERED);
+        return orderMenuEntity;
+    }
 
 }
