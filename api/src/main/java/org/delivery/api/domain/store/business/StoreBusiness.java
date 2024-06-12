@@ -35,8 +35,15 @@ public class StoreBusiness {
         return response.toList();
     }
 
+    public List<StoreResponse> searchName(String name) {
+        var entityList = storeService.searchByName(name);
+        var response = entityList.stream().map(storeConverter::toResponse);
+        return response.toList();
+    }
+
     public StoreDetailResponse storeDetail(Long storeId){
         var storeEntity = storeService.getStoreWithMenu(storeId);
+
         var storeResponse = storeConverter.toResponse(storeEntity);
 
         var menuList = storeEntity.getMenus();

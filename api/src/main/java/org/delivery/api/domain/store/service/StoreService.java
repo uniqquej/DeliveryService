@@ -41,4 +41,8 @@ public class StoreService {
     public List<StoreEntity> registeredStore(){
         return storeRepository.findAllByStatusOrderByIdDesc(StoreStatus.REGISTERED);
     }
+
+    public List<StoreEntity> searchByName(String name) {
+        return storeRepository.findByNameContaining(name);
+    }
 }

@@ -21,4 +21,5 @@ public interface StoreRepository extends JpaRepository<StoreEntity, Long> {
     @Query("SELECT s FROM StoreEntity s JOIN FETCH s.menus WHERE s.id = :storeId")
     StoreEntity findStoreWithStoreMenu(@Param("storeId") Long id);
 
+    List<StoreEntity> findByNameContaining(String name);
 }

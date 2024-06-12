@@ -9,14 +9,11 @@ import org.delivery.api.domain.store.business.StoreBusiness;
 import org.delivery.api.domain.store.controller.model.StoreDetailResponse;
 import org.delivery.api.domain.store.controller.model.StoreRegisterRequest;
 import org.delivery.api.domain.store.controller.model.StoreResponse;
-import org.delivery.api.domain.store.converter.StoreConverter;
-import org.delivery.api.domain.storemenu.converter.StoreMenuConverter;
 import org.delivery.api.domain.user.model.User;
-import org.delivery.db.store.StoreEntity;
-import org.delivery.db.store.StoreRepository;
 import org.delivery.db.store.enums.StoreCategory;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -25,19 +22,21 @@ import java.util.List;
 public class StoreApiController {
     private final StoreBusiness storeBusiness;
 
-
-    private final StoreRepository storeRepository;
-    private final StoreConverter storeConverter;
-    private final StoreMenuConverter storeMenuConverter;
-
-
-
     @GetMapping("/search")
     public Api<List<StoreResponse>> search(
-            @RequestParam(required = false)
-            StoreCategory category
+            @RequestParam(required = false, name = "category")
+            StoreCategory category,
+            @RequestParam(required = false, name = "name")
+            String name
     ){
-        var response = storeBusiness.searchCategory(category);
+        List<StoreResponse> response = new ArrayList<>();
+
+        if(category != null)
+            response = storeBusiness.searchCategory(category);
+
+        else if(name!=null)
+            response = storeBusiness.searchName(name);
+
         return Api.OK(response);
     }
 
