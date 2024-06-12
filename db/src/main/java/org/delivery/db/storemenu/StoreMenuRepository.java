@@ -10,4 +10,6 @@ public interface StoreMenuRepository extends JpaRepository<StoreMenuEntity,Long>
 
     Optional<StoreMenuEntity> findFirstByIdAndStatusOrderByIdDesc(Long id, StoreMenuStatusEnum status);
     List<StoreMenuEntity> findAllByStoreIdAndStatusOrderBySequenceDesc(Long storeId, StoreMenuStatusEnum status);
+
+
 }

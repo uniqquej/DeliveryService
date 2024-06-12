@@ -9,7 +9,11 @@ import org.delivery.api.domain.store.business.StoreBusiness;
 import org.delivery.api.domain.store.controller.model.StoreDetailResponse;
 import org.delivery.api.domain.store.controller.model.StoreRegisterRequest;
 import org.delivery.api.domain.store.controller.model.StoreResponse;
+import org.delivery.api.domain.store.converter.StoreConverter;
+import org.delivery.api.domain.storemenu.converter.StoreMenuConverter;
 import org.delivery.api.domain.user.model.User;
+import org.delivery.db.store.StoreEntity;
+import org.delivery.db.store.StoreRepository;
 import org.delivery.db.store.enums.StoreCategory;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +24,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StoreApiController {
     private final StoreBusiness storeBusiness;
+
+
+    private final StoreRepository storeRepository;
+    private final StoreConverter storeConverter;
+    private final StoreMenuConverter storeMenuConverter;
+
+
 
     @GetMapping("/search")
     public Api<List<StoreResponse>> search(
@@ -50,5 +61,4 @@ public class StoreApiController {
         var response = storeBusiness.register(request.getBody());
         return Api.OK(response);
     }
-
 }

@@ -22,9 +22,8 @@ public class StoreMenuConverter {
                 .build();
     }
 
-    public StoreMenuEntity toEntity(StoreEntity store, MenuRegisterRequest request, String imgUrl){
+    public StoreMenuEntity toEntity(MenuRegisterRequest request, String imgUrl){
         return StoreMenuEntity.builder()
-                .store(store)
                 .name(request.getName())
                 .price(request.getPrice())
                 .thumbnailUrl(imgUrl)

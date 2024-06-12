@@ -36,7 +36,6 @@ public class StoreMenuBusiness {
     }
 
     public void registerMenu(Long storeId, MenuRegisterRequest menuRegisterRequest, MultipartFile menuImgFile) throws Exception {
-        var storeEntity = storeBusiness.getStoreWithThrow(storeId);
         String originImgName = menuImgFile.getOriginalFilename();
         String imgName = "";
         String imgUrl = "";
@@ -46,8 +45,8 @@ public class StoreMenuBusiness {
             imgUrl = "/images/menu/"+imgName;
         }
 
-        var storeMenuEntity = storeMenuConverter.toEntity(storeEntity, menuRegisterRequest,imgUrl);
-        storeMenuService.registerMenu(storeMenuEntity);
+        var storeMenuEntity = storeMenuConverter.toEntity(menuRegisterRequest, imgUrl);
+        storeMenuService.registerMenu(storeId, storeMenuEntity);
     }
 
     private String uploadFile(String uploadPath, String originalFileName, byte[] fileData)throws Exception{

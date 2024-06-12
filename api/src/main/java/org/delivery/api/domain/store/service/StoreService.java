@@ -17,9 +17,8 @@ import java.util.Optional;
 public class StoreService {
     private final StoreRepository storeRepository;
 
-    public StoreEntity getStoreWithThrow(Long id){
-        return storeRepository.findFirstByIdAndStatusOrderByIdDesc(id, StoreStatus.REGISTERED)
-                .orElseThrow(()->new ApiException(ErrorCode.NULL_POINT));
+    public StoreEntity getStoreWithMenu(Long id){
+        return storeRepository.findStoreWithStoreMenu(id);
     }
 
     public StoreEntity register(StoreEntity store){

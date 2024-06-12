@@ -8,6 +8,7 @@ import org.delivery.api.domain.store.controller.model.StoreResponse;
 import org.delivery.api.domain.store.converter.StoreConverter;
 import org.delivery.api.domain.store.service.StoreService;
 import org.delivery.api.domain.storemenu.business.StoreMenuBusiness;
+import org.delivery.api.domain.storemenu.converter.StoreMenuConverter;
 import org.delivery.db.store.StoreEntity;
 import org.delivery.db.store.enums.StoreCategory;
 
@@ -19,7 +20,7 @@ public class StoreBusiness {
     private final StoreService storeService;
     private final StoreConverter storeConverter;
 
-    private final StoreMenuBusiness storeMenuBusiness;
+    private final StoreMenuConverter storeMenuConverter;
 
     public StoreResponse register(StoreRegisterRequest request){
         var entity = storeConverter.toEntity(request);
@@ -35,18 +36,15 @@ public class StoreBusiness {
     }
 
     public StoreDetailResponse storeDetail(Long storeId){
-        var storeEntity = storeService.getStoreWithThrow(storeId);
+        var storeEntity = storeService.getStoreWithMenu(storeId);
         var storeResponse = storeConverter.toResponse(storeEntity);
 
-        var menuList = storeMenuBusiness.search(storeId);
+        var menuList = storeEntity.getMenus();
+        var menuResponse = storeMenuConverter.toResponse(menuList);
 
         return StoreDetailResponse.builder()
                 .store(storeResponse)
-                .menuList(menuList)
+                .menuList(menuResponse)
                 .build();
-    }
-
-    public StoreEntity getStoreWithThrow(Long storeId ){
-        return storeService.getStoreWithThrow(storeId);
     }
 }
