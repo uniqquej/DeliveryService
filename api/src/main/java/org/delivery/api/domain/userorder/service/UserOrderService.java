@@ -1,5 +1,6 @@
 package org.delivery.api.domain.userorder.service;
 
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.delivery.api.common.error.ErrorCode;
 import org.delivery.api.common.error.UserErrorCode;
@@ -7,7 +8,6 @@ import org.delivery.api.common.exception.ApiException;
 import org.delivery.api.domain.user.model.User;
 import org.delivery.db.store.StoreRepository;
 import org.delivery.db.store.enums.StoreStatus;
-import org.delivery.db.user.UserEntity;
 import org.delivery.db.user.UserRepository;
 import org.delivery.db.user.enums.UserStatus;
 import org.delivery.db.userorder.UserOrderEntity;
@@ -22,6 +22,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserOrderService {
     private final UserOrderRepository userOrderRepository;
     private final UserRepository userRepository;

@@ -1,5 +1,6 @@
 package org.delivery.api.domain.userordermenu.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.delivery.api.common.error.ErrorCode;
 import org.delivery.api.common.exception.ApiException;
@@ -19,6 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserOrderMenuService {
     private final UserOrderMenuRepository userOrderMenuRepository;
 

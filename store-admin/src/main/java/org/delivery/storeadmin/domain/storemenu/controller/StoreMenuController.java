@@ -48,6 +48,6 @@ public class StoreMenuController {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return "store/menu";
+        return "redirect:/store-menu";
     }
 }

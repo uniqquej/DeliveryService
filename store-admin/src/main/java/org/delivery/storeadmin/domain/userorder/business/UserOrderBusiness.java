@@ -14,6 +14,7 @@ import org.delivery.storeadmin.domain.userorder.service.UserOrderService;
 import org.delivery.storeadmin.domain.userordermenu.converter.UserOrderMenuConverter;
 import org.delivery.storeadmin.domain.userordermenu.service.UserOrderMenuService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +32,7 @@ public class UserOrderBusiness {
 
     private final SseConnectionPool sseConnectionPool;
 
+    @Transactional
     public void pushUserOrder(UserOrderMessage userOrderMessage) {
         log.info("push user order : {}", userOrderMessage);
         var userOrderEntity = userOrderService.getUserOrder(userOrderMessage.getUserOrderId())

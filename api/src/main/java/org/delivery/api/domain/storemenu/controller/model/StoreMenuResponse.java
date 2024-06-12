@@ -19,7 +19,7 @@ public class StoreMenuResponse {
 
     private String name;
 
-    private BigDecimal amount;
+    private BigDecimal price;
 
     private StoreMenuStatusEnum status;
 

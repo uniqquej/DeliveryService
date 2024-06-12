@@ -1,6 +1,6 @@
 package org.delivery.storeadmin.domain.userorder.service;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.delivery.db.userorder.UserOrderEntity;
 import org.delivery.db.userorder.UserOrderRepository;
@@ -16,6 +16,7 @@ import java.util.Optional;
 public class UserOrderService {
     private final UserOrderRepository userOrderRepository;
 
+    @Transactional(readOnly=true)
     public Optional<UserOrderEntity> getUserOrder(Long userOrderId){
         return userOrderRepository.findById(userOrderId);
     }
