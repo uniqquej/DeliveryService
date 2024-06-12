@@ -52,3 +52,7 @@ span{
 .userInput{
     width: 90%;
 }
+
+.error{
+    color : red;
+}

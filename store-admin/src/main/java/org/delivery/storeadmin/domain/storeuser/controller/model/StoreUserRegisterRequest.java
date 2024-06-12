@@ -1,5 +1,6 @@
 package org.delivery.storeadmin.domain.storeuser.controller.model;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -14,13 +15,14 @@ import org.delivery.db.storeuser.enums.StoreUserRole;
 @ToString
 public class StoreUserRegisterRequest {
 
-    @NotBlank
+    @NotBlank(message = "가게 이름은 공백일 수 없습니다.")
     private String storeName;
 
-    @NotBlank
+    @Email
+    @NotBlank(message = "이메일은 공백일 수 없습니다.")
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "비밀번호는 공백일 수 없습니다.")
     private String password;
 
 //    @NotNull

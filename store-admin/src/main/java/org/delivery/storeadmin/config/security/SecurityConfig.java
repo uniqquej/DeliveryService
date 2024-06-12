@@ -46,6 +46,7 @@ public class SecurityConfig {
                     form
                     .loginPage("/store-user/login").permitAll()
                     .defaultSuccessUrl("/store-order")
+                    .failureUrl("/store-user/login/error")
             );
         http
             .logout(it->

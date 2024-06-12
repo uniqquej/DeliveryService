@@ -8,9 +8,12 @@ import org.delivery.storeadmin.domain.storeuser.controller.model.StoreUserRegist
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/open-api/store-user")
@@ -27,15 +30,18 @@ public class StoreUserOpenApiController {
             Model model
     ){
         if(bindingResult.hasErrors()){
-            return "/user/signup";
+            String errorMessage = bindingResult.getAllErrors().stream()
+                    .map(ObjectError::getDefaultMessage)
+                    .collect(Collectors.joining(", "));
+            model.addAttribute("errorMessage",errorMessage);
+            return "/user/register";
         }
         try{
-
             storeUserBusiness.register(request);
 
         }catch (IllegalStateException e){
             model.addAttribute("errorMessage",e.getMessage());
-            return "/user/signup";
+            return "/user/register";
         }
         return "redirect:/store-user/login";
     }
