@@ -22,7 +22,7 @@ public class StoreResponse {
 
     private StoreStatus status;
 
-    private double star;
+    private BigDecimal star;
 
     private String thumbnailUrl;
 

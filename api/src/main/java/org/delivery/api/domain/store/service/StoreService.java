@@ -24,7 +24,6 @@ public class StoreService {
     public StoreEntity register(StoreEntity store){
         return Optional.ofNullable(store)
                 .map(it-> {
-                    it.setStar(0);
                     it.setStatus(StoreStatus.REGISTERED);
                     return storeRepository.save(store);
                 })

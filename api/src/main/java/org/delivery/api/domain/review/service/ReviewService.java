@@ -28,6 +28,7 @@ public class ReviewService {
     private final UserOrderRepository userOrderRepository;
     private final StoreRepository storeRepository;
 
+    @Transactional
     public ReviewEntity register(ReviewEntity reviewEntity, User user, Long userOrderId, Long storeId){
         var userEntity = userRepository.findFirstByIdAndStatusOrderByIdDesc(user.getId(), UserStatus.REGISTERED)
                 .orElseThrow(()->new ApiException(UserErrorCode.USER_NOT_FOUND));
@@ -38,13 +39,14 @@ public class ReviewService {
         var storeEntity = storeRepository.findById(storeId)
                 .orElseThrow(()->new ApiException(ErrorCode.NULL_POINT));
 
+        storeEntity.addReview(reviewEntity);
+
         return Optional.ofNullable(reviewEntity)
                 .map(it->{
                    reviewEntity.setRegisteredAt(LocalDateTime.now());
                    reviewEntity.setUser(userEntity);
                    reviewEntity.setStatus(ReviewStatus.REGISTERED);
                    reviewEntity.setUserOrder(userOrderEntity);
-                   reviewEntity.setStore(storeEntity);
                     return reviewRepository.save(reviewEntity);
                 })
                 .orElseThrow(()->new ApiException(ErrorCode.NULL_POINT));
