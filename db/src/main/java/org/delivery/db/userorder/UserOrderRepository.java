@@ -10,7 +10,10 @@ import java.util.Optional;
 
 public interface UserOrderRepository extends JpaRepository<UserOrderEntity,Long> {
     List<UserOrderEntity> findAllByStoreIdAndStatusOrderByIdDesc(Long storeId, UserOrderStatus status);
-    List<UserOrderEntity> findAllByStoreIdAndStatusInOrderByIdDesc(Long storeId, List<UserOrderStatus> status);
+
+    @Query("SELECT o FROM UserOrderEntity o JOIN FETCH o.orderMenus WHERE o.store.id = :storeId" +
+            " AND o.status in :statusList")
+    List<UserOrderEntity> findAllByStoreIdAndStatusInOrderByIdDesc(@Param("storeId") Long storeId, @Param("statusList") List<UserOrderStatus> status);
 
     @Query("SELECT o FROM UserOrderEntity o JOIN FETCH o.orderMenus WHERE o.user.id = :userId" +
             " AND o.status in :statusList")
@@ -19,5 +22,8 @@ public interface UserOrderRepository extends JpaRepository<UserOrderEntity,Long>
     @Query("SELECT o FROM UserOrderEntity o JOIN FETCH o.orderMenus WHERE o.user.id = :userId AND o.id = :orderId")
     Optional<UserOrderEntity> findOrderByIdAndUser(
             @Param("userId") Long userId, @Param("orderId") Long id);
+
+    @Query("SELECT o FROM UserOrderEntity o LEFT JOIN FETCH o.orderMenus WHERE o.id = :orderId")
+    Optional<UserOrderEntity> findOrderById(@Param("orderId") Long id);
 
 }

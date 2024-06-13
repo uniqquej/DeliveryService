@@ -64,6 +64,9 @@ ul > li {
     text-decoration: none;
     color : black;
     margin-right : 8px;
+    text-decoration-line: underline;
+    text-decoration-thickness: 3px;
+    text-decoration-color: rgb(238, 99, 99);
 }
 
 .orderLink:hover {

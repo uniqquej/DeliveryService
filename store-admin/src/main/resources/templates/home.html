@@ -30,7 +30,7 @@
                 }
             )
 
-            let result = confirm(message);
+            let result = alert(message);
             if(result){
                 acceptOrder(data.user_order_response.id);
             }
@@ -43,6 +43,7 @@
         <h2 class="text-center">주문 내역 관리</h2>
         <a class="orderLink" th:href="@{/store-order(status='cancel')}"> 취소된 주문</a>
         <a class="orderLink" th:href="@{/store-order}"> 진행 중인 주문</a>
+        <a class="orderLink" th:href="@{/store-order(status='complete')}"> 완료된 주문</a>
     </div>
     <div id="listBox">
         <table class="table">
@@ -76,7 +77,9 @@
                         <button class="btn btn-success" th:if="${orderInfo.acceptedAt==null}" th:value="${orderInfo.id}" onclick="acceptOrder(this.value)">수락</button>
                         <button class="btn btn-dark" th:if="${orderInfo.cookingStartedAt==null and orderInfo.acceptedAt!=null }" th:value="${orderInfo.id}" onclick="acceptOrder(this.value)">조리 시작</button>
                         <button class="btn btn-dark" th:if="${orderInfo.deliveryStartedAt==null and orderInfo.cookingStartedAt!=null}" th:value="${orderInfo.id}" onclick="acceptOrder(this.value)">배달 시작</button>
-                        <span th:if="${orderInfo.deliveryStartedAt!=null}" th:text="${#temporals.format(orderInfo.deliveryStartedAt, 'yyyy-MM-dd HH:mm') + '   배달 시작'}"></span>
+                        <button class="btn btn-dark" th:if="${orderInfo.deliveryStartedAt!=null and orderInfo.receivedAt==null }" th:value="${orderInfo.id}" onclick="acceptOrder(this.value)">배달 완료</button>
+                        <span th:if="${orderInfo.deliveryStartedAt!=null and orderInfo.receivedAt==null}" th:text="${#temporals.format(orderInfo.deliveryStartedAt, 'yyyy-MM-dd HH:mm') + '   배달 시작'}"></span>
+                        <span th:if="${orderInfo.receivedAt!=null}" th:text="${#temporals.format(orderInfo.receivedAt, 'yyyy-MM-dd HH:mm') + '   배달 완료'}"></span>
                     </div>
                     <span th:unless="${orderInfo.cancelledAt==null}">취소된 주문입니다.</span>
                 </td>

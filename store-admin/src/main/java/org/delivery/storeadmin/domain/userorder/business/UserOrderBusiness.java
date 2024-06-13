@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.delivery.common.message.model.UserOrderMessage;
 import org.delivery.db.store.StoreEntity;
 import org.delivery.db.userorder.UserOrderEntity;
+import org.delivery.db.userorder.enums.UserOrderStatus;
 import org.delivery.storeadmin.domain.sse.connection.SseConnectionPool;
 import org.delivery.storeadmin.domain.storemenu.service.StoreMenuService;
 import org.delivery.storeadmin.domain.userorder.controller.model.UserOrderDetailResponse;
@@ -67,8 +68,8 @@ public class UserOrderBusiness {
         return responseList;
     }
 
-    public List<UserOrderResponse> getCancelledOrdersByStoreId(Long storeId) {
-        var entityList = userOrderService.getCancelledOrdersByStoreId(storeId);
+    public List<UserOrderResponse> getOrdersByStatus(Long storeId, UserOrderStatus status) {
+        var entityList = userOrderService.getCancelledOrdersByStoreId(storeId, status);
         var responseList = entityList.stream().map(userOrderConverter::toResponse).toList();
         return responseList;
     }
@@ -87,12 +88,13 @@ public class UserOrderBusiness {
 
     public UserOrderDetailResponse orderDetail(Long orderId) {
         var userOrderEntity = userOrderService.getUserOrder(orderId)
-                .orElseThrow(() -> new RuntimeException("사용자 주문 내역 없음"));
+                .orElseThrow(() -> new NullPointerException("사용자 주문 내역 없음"));
 
-        var userOrderMenuList = userOrderMenuService.getUserOrderMenu(orderId);
+        var userOrderMenuList = userOrderEntity.getOrderMenus();
+
         var storeMenuList = userOrderMenuList.stream().map(
                 it -> {
-                    return storeMenuService.getStoreMenuWithThrow(it.getMenu().getId());
+                    return it.getMenu();
                 }).toList();
 
         var userOrderMenuResponseList = userOrderMenuConverter.toResponse(userOrderMenuList, storeMenuList);

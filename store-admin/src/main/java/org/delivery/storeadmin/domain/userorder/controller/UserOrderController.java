@@ -2,6 +2,7 @@ package org.delivery.storeadmin.domain.userorder.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.delivery.db.userorder.enums.UserOrderStatus;
 import org.delivery.storeadmin.domain.authorization.model.UserSession;
 import org.delivery.storeadmin.domain.userorder.business.UserOrderBusiness;
 import org.delivery.storeadmin.domain.userorder.controller.model.UserOrderResponse;
@@ -29,8 +30,12 @@ public class UserOrderController {
             Model model
     ){
         List<UserOrderResponse> orderList;
-        if(status != null )
-            orderList = userOrderBusiness.getCancelledOrdersByStoreId(userSession.getStoreId());
+        if(status != null ) {
+            if (status.equals("complete"))
+                orderList = userOrderBusiness.getOrdersByStatus(userSession.getStoreId(), UserOrderStatus.RECEIVE);
+            else
+                orderList = userOrderBusiness.getOrdersByStatus(userSession.getStoreId(), UserOrderStatus.CANCELLED);
+        }
         else orderList = userOrderBusiness.getOrdersByStoreId(userSession.getStoreId());
 
         model.addAttribute("orderList",orderList);

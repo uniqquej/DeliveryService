@@ -18,7 +18,7 @@ public class UserOrderService {
 
     @Transactional(readOnly=true)
     public Optional<UserOrderEntity> getUserOrder(Long userOrderId){
-        return userOrderRepository.findById(userOrderId);
+        return userOrderRepository.findOrderById(userOrderId);
     }
 
     @Transactional
@@ -36,6 +36,10 @@ public class UserOrderService {
         else if(userOrderEntity.getDeliveryStartedAt()==null){
             userOrderEntity.setDeliveryStartedAt(LocalDateTime.now());
             userOrderEntity.setStatus(UserOrderStatus.DELIVERY);
+        }
+        else if(userOrderEntity.getReceivedAt()==null){
+            userOrderEntity.setReceivedAt(LocalDateTime.now());
+            userOrderEntity.setStatus(UserOrderStatus.RECEIVE);
         }
         return userOrderEntity;
     }
@@ -59,9 +63,9 @@ public class UserOrderService {
         return userOrderRepository.findAllByStoreIdAndStatusInOrderByIdDesc(storeId, statusList);
     }
 
-    public List<UserOrderEntity> getCancelledOrdersByStoreId(Long storeId){
+    public List<UserOrderEntity> getCancelledOrdersByStoreId(Long storeId, UserOrderStatus status ){
 
-        return userOrderRepository.findAllByStoreIdAndStatusOrderByIdDesc(storeId, UserOrderStatus.CANCELLED);
+        return userOrderRepository.findAllByStoreIdAndStatusOrderByIdDesc(storeId, status);
     }
 
 

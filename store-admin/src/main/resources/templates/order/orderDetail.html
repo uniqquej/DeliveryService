@@ -31,12 +31,14 @@
             <div class="btnBox" th:if="${order.cancelledAt==null}">
                 <button class="btn btn-dark" th:if="${order.acceptedAt!=null and order.cookingStartedAt==null}" th:value="${order.id}" onclick="acceptOrder(this.value)">조리 시작</button>
                 <button class="btn btn-dark" th:if="${order.deliveryStartedAt==null and order.cookingStartedAt!=null }" th:value="${order.id}" onclick="acceptOrder(this.value)">배달 시작</button>
+                <button class="btn btn-dark" th:if="${order.deliveryStartedAt!=null and order.receivedAt==null }" th:value="${order.id}" onclick="acceptOrder(this.value)">배달 완료</button>
             </div>
-            <span th:text="'주문 시간 :' +${#temporals.format(order.orderedAt,'yyyy-MM-dd HH:mm')}"></span>
+            <p th:text="'주문 시간 :' +${#temporals.format(order.orderedAt,'yyyy-MM-dd HH:mm')}"></p>
             <div th:if="${order.cancelledAt==null}">
-                <span th:if="${order.acceptedAt!=null}" th:text="'수락 시간 :' +${#temporals.format(order.acceptedAt,'yyyy-MM-dd HH:mm')}"></span>
-                <span th:if="${order.cookingStartedAt!=null}" th:text="'조리 시작 :' +${#temporals.format(order.cookingStartedAt,'yyyy-MM-dd HH:mm')}"></span>
-                <span th:if="${order.deliveryStartedAt!=null}" th:text="'배달 시작 :' +${#temporals.format(order.deliveryStartedAt,'yyyy-MM-dd HH:mm')}"></span>
+                <p th:if="${order.acceptedAt!=null}" th:text="'수락 시간 :' +${#temporals.format(order.acceptedAt,'yyyy-MM-dd HH:mm')}"></p>
+                <p th:if="${order.cookingStartedAt!=null}" th:text="'조리 시작 :' +${#temporals.format(order.cookingStartedAt,'yyyy-MM-dd HH:mm')}"></p>
+                <p th:if="${order.deliveryStartedAt!=null}" th:text="'배달 시작 :' +${#temporals.format(order.deliveryStartedAt,'yyyy-MM-dd HH:mm')}"></p>
+                <p th:if="${order.receivedAt!=null}" th:text="'배달 완료 :' +${#temporals.format(order.receivedAt,'yyyy-MM-dd HH:mm')}"></p>
             </div>
             <div th:unless="${order.cancelledAt==null}">
                 <span th:text="'주문 취소 :' +${#temporals.format(order.cancelledAt,'yyyy-MM-dd HH:mm')}"></span>
