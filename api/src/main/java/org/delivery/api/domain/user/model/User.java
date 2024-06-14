@@ -1,8 +1,5 @@
 package org.delivery.api.domain.user.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,6 +25,7 @@ public class User {
     private String address;
 
     private UserStatus status;
+
     private UserRole role;
 
     private LocalDateTime registeredAt;

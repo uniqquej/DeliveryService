@@ -16,9 +16,7 @@ public class StoreMenuConverter {
                 .name(storeMenuEntity.getName())
                 .status(storeMenuEntity.getStatus())
                 .price(storeMenuEntity.getPrice())
-                .sequence(storeMenuEntity.getSequence())
                 .thumbnailUrl(storeMenuEntity.getThumbnailUrl())
-                .likeCount(storeMenuEntity.getLikeCount())
                 .build();
     }
 

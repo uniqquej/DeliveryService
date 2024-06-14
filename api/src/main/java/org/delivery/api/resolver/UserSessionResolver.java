@@ -41,6 +41,7 @@ public class UserSessionResolver implements HandlerMethodArgumentResolver {
                 .id(user.getId())
                 .name(user.getName())
                 .password(user.getPassword())
+                .role(user.getRole())
                 .email(user.getEmail())
                 .address(user.getAddress())
                 .status(user.getStatus())

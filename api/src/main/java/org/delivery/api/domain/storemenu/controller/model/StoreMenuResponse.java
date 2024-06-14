@@ -24,8 +24,4 @@ public class StoreMenuResponse {
     private StoreMenuStatusEnum status;
 
     private String thumbnailUrl;
-
-    private int likeCount;
-
-    private int sequence;
 }

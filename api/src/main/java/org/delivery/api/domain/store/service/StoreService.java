@@ -1,5 +1,6 @@
 package org.delivery.api.domain.store.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.delivery.api.common.error.ErrorCode;
 import org.delivery.api.common.exception.ApiException;
@@ -20,6 +21,9 @@ public class StoreService {
     public StoreEntity getStoreWithMenu(Long id){
         return storeRepository.findStoreWithStoreMenu(id);
     }
+    public StoreEntity getStoreEntity(Long id){
+        return storeRepository.findById(id).orElseThrow(()->new ApiException(ErrorCode.NULL_POINT));
+    }
 
     public StoreEntity register(StoreEntity store){
         return Optional.ofNullable(store)
@@ -37,11 +41,20 @@ public class StoreService {
         );
     }
 
-    public List<StoreEntity> registeredStore(){
-        return storeRepository.findAllByStatusOrderByIdDesc(StoreStatus.REGISTERED);
-    }
-
     public List<StoreEntity> searchByName(String name) {
         return storeRepository.findByNameContaining(name);
+    }
+
+
+    public StoreEntity likeStore(Long id){
+        var storeEntity = storeRepository.getReferenceById(id);
+        storeEntity.likeStore();
+        return storeEntity;
+    }
+
+    public StoreEntity canceledLikeStore(Long id){
+        var storeEntity = storeRepository.getReferenceById(id);
+        storeEntity.canceledLikeStore();
+        return storeEntity;
     }
 }

@@ -36,7 +36,4 @@ public class StoreMenuEntity extends BaseEntity {
 
     @Column(length = 200,nullable = false)
     private String thumbnailUrl;
-
-    private int likeCount;
-    private int sequence;
 }

@@ -41,6 +41,12 @@ public class StoreBusiness {
         return response.toList();
     }
 
+    public StoreResponse getStoreById(Long storeId){
+        var storeEntity = storeService.getStoreEntity(storeId);
+        var response = storeConverter.toResponse(storeEntity);
+        return response;
+    }
+
     public StoreDetailResponse storeDetail(Long storeId){
         var storeEntity = storeService.getStoreWithMenu(storeId);
 
@@ -53,5 +59,15 @@ public class StoreBusiness {
                 .store(storeResponse)
                 .menuList(menuResponse)
                 .build();
+    }
+
+    public StoreResponse likeStore(Long id){
+        var storeEntity = storeService.likeStore(id);
+        return storeConverter.toResponse(storeEntity);
+    }
+
+    public StoreResponse canceledLikeStore(Long id){
+        var storeEntity = storeService.canceledLikeStore(id);
+        return storeConverter.toResponse(storeEntity);
     }
 }

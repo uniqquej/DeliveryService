@@ -29,4 +29,6 @@ public class StoreResponse {
     private BigDecimal minimumDeliveryPrice;
 
     private String phoneNumber;
+
+    private int likes;
 }

@@ -36,8 +36,6 @@ public class StoreMenuConverter {
                             .name(entity.getName())
                             .price(entity.getPrice())
                             .thumbnailUrl(entity.getThumbnailUrl())
-                            .likeCount(entity.getLikeCount())
-                            .sequence(entity.getSequence())
                             .build();
                 }).orElseThrow(()->new ApiException(ErrorCode.NULL_POINT));
     }

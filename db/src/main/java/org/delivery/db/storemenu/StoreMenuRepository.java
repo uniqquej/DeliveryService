@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface StoreMenuRepository extends JpaRepository<StoreMenuEntity,Long> {
 
     Optional<StoreMenuEntity> findFirstByIdAndStatusOrderByIdDesc(Long id, StoreMenuStatusEnum status);
-    List<StoreMenuEntity> findAllByStoreIdAndStatusOrderBySequenceDesc(Long storeId, StoreMenuStatusEnum status);
+    List<StoreMenuEntity> findAllByStoreIdAndStatus(Long storeId, StoreMenuStatusEnum status);
 
 
 }

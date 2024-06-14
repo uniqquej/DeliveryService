@@ -29,7 +29,7 @@ public class StoreMenuService {
     }
 
     public List<StoreMenuEntity> getStoreMenuByStoreId(Long storeId){
-        return storeMenuRepository.findAllByStoreIdAndStatusOrderBySequenceDesc(storeId, StoreMenuStatusEnum.REGISTERED);
+        return storeMenuRepository.findAllByStoreIdAndStatus(storeId, StoreMenuStatusEnum.REGISTERED);
     }
 
 }

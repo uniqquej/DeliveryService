@@ -17,9 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/store")
+@RequestMapping("/open-api/store")
 @RequiredArgsConstructor
-public class StoreApiController {
+public class StoreOpenApiController {
     private final StoreBusiness storeBusiness;
 
     @GetMapping("/search")

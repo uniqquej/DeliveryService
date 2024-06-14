@@ -56,6 +56,8 @@ public class StoreEntity extends BaseEntity {
     @Column(length = 20)
     private String phoneNumber;
 
+    private int likes;
+
     public void addMenu(StoreMenuEntity menuEntity){
         menus.add(menuEntity);
         menuEntity.setStore(this);
@@ -64,6 +66,14 @@ public class StoreEntity extends BaseEntity {
     public void addReview(ReviewEntity reviewEntity){
         reviews.add(reviewEntity);
         reviewEntity.setStore(this);
+    }
+
+    public void likeStore(){
+        likes++;
+    }
+
+    public void canceledLikeStore(){
+        likes--;
     }
 
     public BigDecimal calculateStar(){
