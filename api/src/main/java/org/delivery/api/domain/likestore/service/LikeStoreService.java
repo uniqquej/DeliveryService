@@ -1,18 +1,21 @@
 package org.delivery.api.domain.likestore.service;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.delivery.db.likestore.LikeStoreEntity;
 import org.delivery.db.likestore.LikeStoreRepository;
 import org.delivery.db.likestore.enums.LikeStatus;
 import org.delivery.db.store.StoreEntity;
+import org.delivery.db.store.StoreRepository;
 import org.delivery.db.user.UserEntity;
+import org.delivery.db.user.UserRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class LikeStoreService {
     private final LikeStoreRepository likeStoreRepository;
+    private final UserRepository userRepository;
+    private final StoreRepository storeRepository;
 
     public LikeStoreEntity getLikeStore(Long storeId, Long userId){
         return likeStoreRepository.checkLikeStore(storeId,userId)
@@ -26,15 +29,14 @@ public class LikeStoreService {
 
     }
 
-    public LikeStoreEntity updateStatus(LikeStoreEntity likeStore,StoreEntity store,
-                                        UserEntity user, LikeStatus likeStatus) {
-        System.out.printf("new entity update status : ");
-        System.out.println(likeStore.toString());
+    public LikeStoreEntity updateStatus(LikeStoreEntity likeStore,Long storeId,
+                                        Long userId, LikeStatus likeStatus) {
+       var store = storeRepository.getReferenceById(storeId);
+       var user = userRepository.getReferenceById(userId);
+
         likeStore.setStore(store);
         likeStore.setUser(user);
         likeStore.setStatus(likeStatus);
-
-        System.out.println(likeStore.toString());
 
         return likeStoreRepository.save(likeStore);
     }

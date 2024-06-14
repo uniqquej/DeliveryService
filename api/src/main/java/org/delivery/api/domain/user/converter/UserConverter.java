@@ -26,20 +26,6 @@ public class UserConverter {
                 }).orElseThrow(()-> new ApiException(ErrorCode.NULL_POINT,"UserRegisterRequest Null"));
     }
 
-    public UserEntity toEntity(User user){
-        return Optional.ofNullable(user)
-                .map(it->{
-                    return UserEntity.builder()
-                            .email(user.getEmail())
-                            .name(user.getName())
-                            .status(user.getStatus())
-                            .role(user.getRole())
-                            .address(user.getAddress())
-                            .password(user.getPassword())
-                            .build();
-                }).orElseThrow(()-> new ApiException(ErrorCode.NULL_POINT,"User Null"));
-    }
-
     public UserResponse toResponse(UserEntity entity) {
         return Optional.ofNullable(entity)
                 .map(it->{

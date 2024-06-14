@@ -46,12 +46,14 @@ public class StoreService {
     }
 
 
+    @Transactional
     public StoreEntity likeStore(Long id){
         var storeEntity = storeRepository.getReferenceById(id);
         storeEntity.likeStore();
         return storeEntity;
     }
 
+    @Transactional
     public StoreEntity canceledLikeStore(Long id){
         var storeEntity = storeRepository.getReferenceById(id);
         storeEntity.canceledLikeStore();

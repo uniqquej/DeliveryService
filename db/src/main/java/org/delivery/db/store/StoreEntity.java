@@ -69,11 +69,11 @@ public class StoreEntity extends BaseEntity {
     }
 
     public void likeStore(){
-        likes++;
+        this.likes += 1;
     }
 
     public void canceledLikeStore(){
-        likes--;
+        this.likes -= 1;
     }
 
     public BigDecimal calculateStar(){
