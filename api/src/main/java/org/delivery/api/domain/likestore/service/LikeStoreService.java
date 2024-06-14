@@ -10,6 +10,8 @@ import org.delivery.db.user.UserEntity;
 import org.delivery.db.user.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class LikeStoreService {
@@ -20,6 +22,10 @@ public class LikeStoreService {
     public LikeStoreEntity getLikeStore(Long storeId, Long userId){
         return likeStoreRepository.checkLikeStore(storeId,userId)
                 .orElseGet(LikeStoreEntity::new);
+    }
+
+    public List<LikeStoreEntity> getLikeStore(Long userId){
+        return likeStoreRepository.checkLikeStore(userId, LikeStatus.LIKE);
     }
 
     public LikeStoreEntity updateStatus(LikeStoreEntity likeStore, LikeStatus likeStatus) {
