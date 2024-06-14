@@ -3,8 +3,6 @@ package org.delivery.storeadmin.domain.userorder.business;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.delivery.common.message.model.UserOrderMessage;
-import org.delivery.db.store.StoreEntity;
-import org.delivery.db.userorder.UserOrderEntity;
 import org.delivery.db.userorder.enums.UserOrderStatus;
 import org.delivery.storeadmin.domain.sse.connection.SseConnectionPool;
 import org.delivery.storeadmin.domain.storemenu.service.StoreMenuService;
@@ -18,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

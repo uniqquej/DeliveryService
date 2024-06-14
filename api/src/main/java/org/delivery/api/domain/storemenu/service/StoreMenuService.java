@@ -20,6 +20,14 @@ public class StoreMenuService {
         return entity.orElseThrow(()->new ApiException(ErrorCode.NULL_POINT));
     }
 
+    public List<StoreMenuEntity> getStoreMenuWithThrow(List<Long> menuIds){
+        var storeEntityList = menuIds.stream().map(it->{
+          return getStoreMenuWithThrow(it);
+        });
+
+        return storeEntityList.toList();
+    }
+
     public List<StoreMenuEntity> getStoreMenuByStoreId(Long storeId){
         return storeMenuRepository.findAllByStoreIdAndStatusOrderBySequenceDesc(storeId, StoreMenuStatusEnum.REGISTERED);
     }

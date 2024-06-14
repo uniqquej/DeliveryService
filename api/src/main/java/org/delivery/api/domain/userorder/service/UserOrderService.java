@@ -1,5 +1,6 @@
 package org.delivery.api.domain.userorder.service;
 
+import org.delivery.api.domain.userorder.controller.model.UserOrderRequest;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.delivery.api.common.error.ErrorCode;
@@ -28,11 +29,11 @@ public class UserOrderService {
     private final UserRepository userRepository;
     private final StoreRepository storeRepository;
 
-    public UserOrderEntity order(User user, List<UserOrderMenuEntity> userOrderMenuEntityList, Long storeId){
+    public UserOrderEntity order(User user, List<UserOrderMenuEntity> userOrderMenuEntityList, UserOrderRequest request){
         var userEntity = userRepository.findFirstByIdAndStatusOrderByIdDesc(user.getId(), UserStatus.REGISTERED)
                 .orElseThrow(()->new ApiException(UserErrorCode.USER_NOT_FOUND));
 
-        var storeEntity = storeRepository.findFirstByIdAndStatusOrderByIdDesc(storeId, StoreStatus.REGISTERED)
+        var storeEntity = storeRepository.findFirstByIdAndStatusOrderByIdDesc(request.getStoreId(), StoreStatus.REGISTERED)
                 .orElseThrow(()->new ApiException(ErrorCode.NULL_POINT));
 
         var orderEntity =  UserOrderEntity.createUserOrder(userEntity, userOrderMenuEntityList);
@@ -40,6 +41,7 @@ public class UserOrderService {
         orderEntity.setStatus(UserOrderStatus.ORDER);
         orderEntity.setTotalPrice(orderEntity.getTotalPrice());
         orderEntity.setStore(storeEntity);
+        orderEntity.setAddress(request.getAddress());
         userOrderRepository.save(orderEntity);
         return orderEntity;
     }

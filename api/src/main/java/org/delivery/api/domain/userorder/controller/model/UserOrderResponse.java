@@ -15,6 +15,8 @@ import java.time.LocalDateTime;
 public class UserOrderResponse {
     private Long id;
     private Long storeId;
+    private String address;
+    private boolean hasReview;
     private UserOrderStatus status;
     private BigDecimal totalPrice;
     private LocalDateTime orderedAt;

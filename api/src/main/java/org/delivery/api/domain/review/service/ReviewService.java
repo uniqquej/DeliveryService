@@ -36,6 +36,8 @@ public class ReviewService {
         var userOrderEntity = userOrderRepository.findById(userOrderId)
                 .orElseThrow(()->new ApiException(ErrorCode.NULL_POINT));
 
+        userOrderEntity.addReview(reviewEntity);
+
         var storeEntity = storeRepository.findById(storeId)
                 .orElseThrow(()->new ApiException(ErrorCode.NULL_POINT));
 
@@ -46,7 +48,6 @@ public class ReviewService {
                    reviewEntity.setRegisteredAt(LocalDateTime.now());
                    reviewEntity.setUser(userEntity);
                    reviewEntity.setStatus(ReviewStatus.REGISTERED);
-                   reviewEntity.setUserOrder(userOrderEntity);
                     return reviewRepository.save(reviewEntity);
                 })
                 .orElseThrow(()->new ApiException(ErrorCode.NULL_POINT));

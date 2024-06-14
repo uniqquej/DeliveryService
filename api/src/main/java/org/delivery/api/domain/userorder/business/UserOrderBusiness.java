@@ -3,8 +3,6 @@ package org.delivery.api.domain.userorder.business;
 import lombok.RequiredArgsConstructor;
 import org.delivery.api.common.annotation.Business;
 import org.delivery.api.domain.store.converter.StoreConverter;
-import org.delivery.api.domain.store.service.StoreService;
-import org.delivery.api.domain.storemenu.converter.StoreMenuConverter;
 import org.delivery.api.domain.storemenu.service.StoreMenuService;
 import org.delivery.api.domain.user.model.User;
 import org.delivery.api.domain.userorder.controller.model.UserOrderDetailResponse;
@@ -15,13 +13,10 @@ import org.delivery.api.domain.userorder.producer.UserOrderProducer;
 import org.delivery.api.domain.userorder.service.UserOrderService;
 import org.delivery.api.domain.userordermenu.converter.UserOrderMenuConverter;
 import org.delivery.api.domain.userordermenu.service.UserOrderMenuService;
-import org.delivery.db.user.UserEntity;
 import org.delivery.db.userorder.UserOrderEntity;
 import org.delivery.db.userordermenu.UserOrderMenuEntity;
-import org.springframework.core.annotation.Order;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Business
 @RequiredArgsConstructor
@@ -37,7 +32,6 @@ public class UserOrderBusiness {
 
     private final UserOrderProducer userOrderProducer;
 
-    private final StoreService storeService;
     public UserOrderResponse order(User user, UserOrderRequest request){
 
         var storeMenuEntityList = request.getStoreMenuIdList().stream().map(
@@ -45,7 +39,7 @@ public class UserOrderBusiness {
         ).toList();
 
         List<UserOrderMenuEntity> orderMenuEntityList = userOrderMenuService.order(storeMenuEntityList, request.getCountList());
-        UserOrderEntity orderEntity = userOrderService.order(user, orderMenuEntityList, request.getStoreId());
+        UserOrderEntity orderEntity = userOrderService.order(user, orderMenuEntityList, request);
 
         //비동기로 가맹점에 주문 알림
         userOrderProducer.sendOrder(orderEntity);

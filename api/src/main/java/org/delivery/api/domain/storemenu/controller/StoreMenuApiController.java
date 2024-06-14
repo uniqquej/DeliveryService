@@ -1,19 +1,15 @@
 package org.delivery.api.domain.storemenu.controller;
 
-import io.swagger.v3.oas.annotations.Parameter;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.delivery.api.common.annotation.UserSession;
 import org.delivery.api.common.api.Api;
-import org.delivery.api.common.error.ErrorCode;
 import org.delivery.api.domain.storemenu.business.StoreMenuBusiness;
-import org.delivery.api.domain.storemenu.controller.model.StoreMenuRegisterRequest;
 import org.delivery.api.domain.storemenu.controller.model.StoreMenuResponse;
-import org.delivery.api.domain.user.model.User;
-import org.delivery.db.user.enums.UserRole;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.naming.AuthenticationException;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -29,6 +25,19 @@ public class StoreMenuApiController {
     ){
         var response = storeMenuBusiness.search(storeId);
         return Api.OK(response);
+    }
+
+    @GetMapping("")
+    public Api<List<StoreMenuResponse>> menuInfo(
+            @RequestParam(name = "menus")
+            String menus
+    ){
+        List<Long> menuIds = Arrays.stream(menus.split(",")).map(Long::parseLong).toList();
+
+        var response = storeMenuBusiness.getMenuInfo(menuIds);
+        return Api.OK(response);
+
+
     }
 
 }

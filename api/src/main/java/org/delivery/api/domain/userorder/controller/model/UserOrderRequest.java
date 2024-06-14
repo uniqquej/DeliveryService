@@ -15,6 +15,9 @@ public class UserOrderRequest {
     private Long storeId;
 
     @NotNull
+    private String address;
+
+    @NotNull
     private List<Long> storeMenuIdList;
 
     @NotNull

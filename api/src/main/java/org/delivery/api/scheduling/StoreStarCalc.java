@@ -1,5 +1,6 @@
 package org.delivery.api.scheduling;
 
+import lombok.extern.slf4j.Slf4j;
 import org.delivery.db.store.StoreEntity;
 import org.delivery.db.store.StoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Service
+//@Service
+@Slf4j(topic = "store star calc")
 public class StoreStarCalc {
     @Autowired
     private StoreRepository storeRepository;
@@ -18,10 +20,12 @@ public class StoreStarCalc {
     @Value("${schedule.use}")
     private boolean useSchedule;
 
-    @Scheduled(cron="${schedule.cron}")
+//    @Scheduled(cron="${schedule.cron}")
+    @Scheduled(fixedDelay = 1000*60)
     @Transactional
     public void calcStarSchedule(){
         if(useSchedule){
+            log.info("scheduling******************");
             List<StoreEntity> storeEntityList = storeRepository.findAll();
 
             for(StoreEntity store: storeEntityList){

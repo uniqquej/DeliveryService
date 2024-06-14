@@ -14,6 +14,11 @@ public class StoreMenuBusiness {
     private final StoreMenuConverter storeMenuConverter;
     private final StoreMenuService storeMenuService;
 
+    public List<StoreMenuResponse> getMenuInfo(List<Long> menuIds) {
+        var menuEntityList = storeMenuService.getStoreMenuWithThrow(menuIds);
+        return menuEntityList.stream().map(storeMenuConverter::toResponse).toList();
+    }
+
     public List<StoreMenuResponse> search(Long storeId){
         var list = storeMenuService.getStoreMenuByStoreId(storeId);
         return list.stream().map(storeMenuConverter::toResponse).toList();

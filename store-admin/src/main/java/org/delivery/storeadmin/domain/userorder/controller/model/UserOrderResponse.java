@@ -17,6 +17,7 @@ public class UserOrderResponse {
     private Long id;
     private Long userId;
     private Long storeId;
+    private String address;
     private UserOrderStatus status;
     private BigDecimal amount;
     private LocalDateTime orderedAt;

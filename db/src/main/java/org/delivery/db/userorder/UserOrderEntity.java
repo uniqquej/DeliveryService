@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.delivery.db.BaseEntity;
+import org.delivery.db.review.ReviewEntity;
 import org.delivery.db.store.StoreEntity;
 import org.delivery.db.user.UserEntity;
 import org.delivery.db.userorder.enums.UserOrderStatus;
@@ -25,6 +26,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserOrderEntity extends BaseEntity {
+    @Column(nullable = false)
+    private String address;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
     private UserEntity user;
@@ -32,6 +36,9 @@ public class UserOrderEntity extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id")
     private StoreEntity store;
+
+    @OneToOne(mappedBy = "userOrder",fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private ReviewEntity review;
 
     @OneToMany(mappedBy = "userOrder", cascade = CascadeType.ALL,orphanRemoval = true, fetch = FetchType.LAZY)
     private List<UserOrderMenuEntity> orderMenus = new ArrayList<>();
@@ -66,6 +73,15 @@ public class UserOrderEntity extends BaseEntity {
     public void addMenu(UserOrderMenuEntity userOrderMenu){
         orderMenus.add(userOrderMenu);
         userOrderMenu.setUserOrder(this);
+    }
+
+    public void addReview(ReviewEntity reviewEntity){
+        review = reviewEntity;
+        reviewEntity.setUserOrder(this);
+    }
+
+    public boolean hasReview() {
+        return getReview() != null;
     }
 
     public BigDecimal getTotalPrice(){
