@@ -2,14 +2,14 @@ package org.delivery.api.domain.store.business;
 
 import lombok.RequiredArgsConstructor;
 import org.delivery.api.common.annotation.Business;
+import org.delivery.api.domain.likestore.business.LikeStoreBusiness;
 import org.delivery.api.domain.store.controller.model.StoreDetailResponse;
 import org.delivery.api.domain.store.controller.model.StoreRegisterRequest;
 import org.delivery.api.domain.store.controller.model.StoreResponse;
 import org.delivery.api.domain.store.converter.StoreConverter;
 import org.delivery.api.domain.store.service.StoreService;
-import org.delivery.api.domain.storemenu.business.StoreMenuBusiness;
 import org.delivery.api.domain.storemenu.converter.StoreMenuConverter;
-import org.delivery.db.store.StoreEntity;
+import org.delivery.api.domain.user.model.User;
 import org.delivery.db.store.enums.StoreCategory;
 
 import java.util.List;
@@ -21,6 +21,7 @@ public class StoreBusiness {
     private final StoreConverter storeConverter;
 
     private final StoreMenuConverter storeMenuConverter;
+    private final LikeStoreBusiness likeStoreBusiness;
 
     public StoreResponse register(StoreRegisterRequest request){
         var entity = storeConverter.toEntity(request);
@@ -41,13 +42,8 @@ public class StoreBusiness {
         return response.toList();
     }
 
-    public StoreResponse getStoreById(Long storeId){
-        var storeEntity = storeService.getStoreEntity(storeId);
-        var response = storeConverter.toResponse(storeEntity);
-        return response;
-    }
-
-    public StoreDetailResponse storeDetail(Long storeId){
+    public StoreDetailResponse storeDetail(Long storeId, User user){
+        var likedStoreIds = likeStoreBusiness.checkMyLikeStore(storeId, user);
         var storeEntity = storeService.getStoreWithMenu(storeId);
 
         var storeResponse = storeConverter.toResponse(storeEntity);
@@ -58,6 +54,7 @@ public class StoreBusiness {
         return StoreDetailResponse.builder()
                 .store(storeResponse)
                 .menuList(menuResponse)
+                .likedStore(likedStoreIds)
                 .build();
     }
 

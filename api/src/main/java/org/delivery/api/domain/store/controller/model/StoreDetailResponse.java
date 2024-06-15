@@ -13,4 +13,5 @@ import java.util.List;
 public class StoreDetailResponse {
     private StoreResponse store;
     private List<StoreMenuResponse> menuList;
+    private boolean likedStore;
 }

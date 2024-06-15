@@ -7,10 +7,13 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.delivery.db.BaseEntity;
+import org.delivery.db.likestore.LikeStoreEntity;
 import org.delivery.db.user.enums.UserRole;
 import org.delivery.db.user.enums.UserStatus;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -20,6 +23,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @SuperBuilder
 public class UserEntity extends BaseEntity {
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<LikeStoreEntity> likedStores;
 
     @Column(length = 50, nullable = false)
     private String name;
@@ -46,4 +52,10 @@ public class UserEntity extends BaseEntity {
     private LocalDateTime unregisteredAt;
 
     private LocalDateTime lastLoginAt;
+
+    @Transactional
+    public void addLikedStore(LikeStoreEntity likeStore){
+        likedStores.add(likeStore);
+        likeStore.setUser(this);
+    }
 }

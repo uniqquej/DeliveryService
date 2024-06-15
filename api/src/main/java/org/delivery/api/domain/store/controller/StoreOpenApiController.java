@@ -40,15 +40,6 @@ public class StoreOpenApiController {
         return Api.OK(response);
     }
 
-    @GetMapping("/detail")
-    public Api<StoreDetailResponse> detail(
-            @RequestParam(required = false)
-            Long storeId
-    ){
-        var response = storeBusiness.storeDetail(storeId);
-        return Api.OK(response);
-    }
-
     @PostMapping("/register")
     public Api<StoreResponse> register(
             @RequestBody @Valid Api<StoreRegisterRequest> request,
