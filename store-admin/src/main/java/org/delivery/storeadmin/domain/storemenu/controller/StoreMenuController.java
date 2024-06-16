@@ -27,7 +27,7 @@ public class StoreMenuController {
     ){
         var storeMenuList = storeMenuBusiness.getStoreMenuList(userSession.getStoreId());
         model.addAttribute("menuList",storeMenuList);
-        return "/store/menu";
+        return "store/menu";
     }
 
     @GetMapping("/register")

@@ -34,14 +34,14 @@ public class StoreUserOpenApiController {
                     .map(ObjectError::getDefaultMessage)
                     .collect(Collectors.joining(", "));
             model.addAttribute("errorMessage",errorMessage);
-            return "/user/register";
+            return "user/register";
         }
         try{
             storeUserBusiness.register(request);
 
         }catch (IllegalStateException e){
             model.addAttribute("errorMessage",e.getMessage());
-            return "/user/register";
+            return "user/register";
         }
         return "redirect:/store-user/login";
     }

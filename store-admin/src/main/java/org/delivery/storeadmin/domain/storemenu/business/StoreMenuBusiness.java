@@ -5,10 +5,10 @@ import org.delivery.storeadmin.domain.store.business.StoreBusiness;
 import org.delivery.storeadmin.domain.storemenu.controller.model.MenuRegisterRequest;
 import org.delivery.storeadmin.domain.storemenu.controller.model.StoreMenuResponse;
 import org.delivery.storeadmin.domain.storemenu.converter.StoreMenuConverter;
+import org.delivery.storeadmin.domain.storemenu.service.S3UploadService;
 import org.delivery.storeadmin.domain.storemenu.service.StoreMenuService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileOutputStream;
@@ -27,6 +27,8 @@ public class StoreMenuBusiness {
 
     private final StoreBusiness storeBusiness;
 
+    private final S3UploadService s3UploadService;
+
     public List<StoreMenuResponse> getStoreMenuList(Long storeId){
         var storeEntity = storeBusiness.getStoreWithThrow(storeId);
         var storeMenuEntityList = storeMenuService.getStoreMenuByStoreId(storeId);
@@ -36,15 +38,7 @@ public class StoreMenuBusiness {
     }
 
     public void registerMenu(Long storeId, MenuRegisterRequest menuRegisterRequest, MultipartFile menuImgFile) throws Exception {
-        String originImgName = menuImgFile.getOriginalFilename();
-        String imgName = "";
-        String imgUrl = "";
-
-        if(!StringUtils.isEmpty(originImgName)){
-            imgName = uploadFile(menuImgLocation, originImgName,menuImgFile.getBytes());
-            imgUrl = "/images/menu/"+imgName;
-        }
-
+        var imgUrl = s3UploadService.upload(menuImgFile);
         var storeMenuEntity = storeMenuConverter.toEntity(menuRegisterRequest, imgUrl);
         storeMenuService.registerMenu(storeId, storeMenuEntity);
     }
