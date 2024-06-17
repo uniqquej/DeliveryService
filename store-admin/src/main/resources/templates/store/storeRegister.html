@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/nav}">
+
+<th:block layout:fragment="css">
+    <style>
+        .input-group {
+            margin-bottom : 10px;
+        }
+    </style>
+
+</th:block>
+
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+        $(document).ready(function(){
+            var errorMessage = [[${errorMessage}]];
+            if(errorMessage != null){
+                alert(errorMessage.replaceAll(',','\n'));
+            }
+        });
+
+        function bindDomEvent(){
+            $(".custom-file-input").on("change", function() {
+                var fileName = $(this).val().split("\\").pop();  //이미지 파일명
+                var fileExt = fileName.substring(fileName.lastIndexOf(".")+1); // 확장자 추출
+                fileExt = fileExt.toLowerCase(); //소문자 변환
+
+                if(fileExt != "jpg" && fileExt != "jpeg" && fileExt != "gif" && fileExt != "png" && fileExt != "bmp"){
+                    alert("이미지 파일만 등록이 가능합니다.");
+                    return;
+                }
+
+                $(this).siblings(".custom-file-label").html(fileName);
+            });
+        }
+    </script>
+</th:block>
+
+<div layout:fragment="content">
+    <div>
+        <h2 class="text-center">가게 등록</h2>
+    </div>
+    <form method="post" role="form" enctype="multipart/form-data" th:object="${storeRegisterRequest}">
+        <div class="form-group">
+            <span>카테고리</span>
+            <select class="custom-select" th:field="*{category}">
+                <option value="CHINESE_FOOD">중식</option>
+                <option value="JAPANESE_FOOD">일식</option>
+                <option value="KOREAN_FOOD">한식</option>
+                <option value="PIZZA">피자</option>
+                <option value="HAMBURGER">햄버거</option>
+                <option value="CHICKEN">치킨</option>
+                <option value="DESSERT">디저트</option>
+            </select>
+        <div>
+
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text">가게 이름</span>
+            </div>
+            <input type="text" th:field="*{name}" class="form-control" placeholder="가게 이름을 입력해주세요">
+        </div>
+
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text">가게 주소</span>
+            </div>
+            <input type="text" th:field="*{address}" class="form-control" placeholder="가게 주소를 입력해주세요">
+        </div>
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text">최소 배달 금액</span>
+            </div>
+            <input type="text" th:field="*{minimumDeliveryPrice}" class="form-control" placeholder="최소 배달금액 입력해주세요">
+        </div>
+
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text">가게 번호</span>
+            </div>
+            <input type="text" th:field="*{phoneNumber}" class="form-control" placeholder="전화 번호를 입력해주세요">
+        </div>
+
+        <div class="form-group" >
+            <div class="custom-file img-div">
+                <input type="file" class="custom-file-input" name="storeImgFile">
+                <label class="custom-file-label" >대표 이미지</label>
+            </div>
+        </div>
+        <div style="text-align: center">
+            <button th:formaction="@{/master/store/register}" type="submit" class="btn btn-primary">저장</button>
+        </div>
+    </form>
+</div>
+</html>

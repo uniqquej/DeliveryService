@@ -24,6 +24,8 @@ public class UserService {
     private final UserRepository userRepository;
 
     public UserEntity register(UserEntity userEntity){
+        var email = userEntity.getEmail();
+
         return Optional.ofNullable(userEntity)
                 .map(it->{
                     userEntity.setRole(UserRole.USER);
@@ -58,6 +60,5 @@ public class UserService {
         user.setAddress(request.getAddress());
         user.setName(request.getName());
         return user;
-
     }
 }

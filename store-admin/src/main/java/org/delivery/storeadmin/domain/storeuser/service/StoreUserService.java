@@ -18,6 +18,9 @@ public class StoreUserService {
     private final PasswordEncoder passwordEncoder;
 
     public StoreUserEntity register(StoreUserEntity storeUserEntity){
+        var emailCheck = storeUserRepository.findFirstByEmail(storeUserEntity.getEmail());
+        if(emailCheck.isPresent()) throw new IllegalArgumentException("중복 사용자가 존재합니다.");
+
         storeUserEntity.setRole(StoreUserRole.ADMIN);
         storeUserEntity.setStatus(StoreUserStatus.REGISTERED);
         storeUserEntity.setPassword(passwordEncoder.encode(storeUserEntity.getPassword()));

@@ -18,6 +18,8 @@ public class StoreUserBusiness {
 
     public StoreUserResponse register(StoreUserRegisterRequest request){
         var storeEntity = storeRepository.findFirstByNameAndStatusOrderByIdDesc(request.getStoreName(), StoreStatus.REGISTERED);
+        storeEntity.orElseThrow(()-> new NullPointerException("존재하지 않는 가게 이름입니다."));
+
         var entity = storeUserConverter.toEntity(request,storeEntity.get());
 
         var savedEntity = storeUserService.register(entity);

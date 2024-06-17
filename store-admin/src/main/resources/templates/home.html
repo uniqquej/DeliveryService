@@ -1,92 +1,25 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layout/nav}">
 
 <th:block layout:fragment="css">
     <link rel="stylesheet" th:href="@{/css/order.css}">
 </th:block>
 
-<th:block layout:fragment="script">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-    <script th:inline="javascript">
-
-        // SSE 연결
-        const url = "http://localhost:8081/api/sse/connect";    // 접속주소
-        const eventSource = new EventSource(url);               // sse 연결
-
-        eventSource.onopen = event => {
-            console.log("sse connection")
-        }
-
-        eventSource.onmessage = event => {
-            console.log("receive : "+event.data);
-            const data = JSON.parse(event.data);
-            let message = "주문이 들어왔어요!! \n\n";
-            let menuResponseList = data.user_order_menu_response_list;
-            menuResponseList.forEach(
-                menu => {
-                    message += (menu.menu_name + ' : '+ menu.count +'개 \n');
-                }
-            )
-
-            let result = alert(message);
-            if(result){
-                acceptOrder(data.user_order_response.id);
-            }
-        }
-    </script>
-    <script type="text/javascript" th:src="@{/js/order.js}"></script>
-</th:block>
 <div layout:fragment="content">
-    <div>
-        <h2 class="text-center">주문 내역 관리</h2>
-        <a class="orderLink" th:href="@{/store-order(status='cancel')}"> 취소된 주문</a>
-        <a class="orderLink" th:href="@{/store-order}"> 진행 중인 주문</a>
-        <a class="orderLink" th:href="@{/store-order(status='complete')}"> 완료된 주문</a>
-    </div>
-    <div id="listBox">
-        <table class="table">
-            <colgroup>
-                <col width="45%"/>
-                <col width="25%"/>
-                <col width="30%"/>
-            </colgroup>
-            <thead>
-            <tr class="text-center">
-                <td><b>주문 내역</b></td>
-                <td><b>주문 시간</b></td>
-                <td><b>주문 관리</b></td>
-            </tr>
-            </thead>
-            <tbody >
-            <tr th:each="orderInfo : ${orderList}" class="text-center">
 
-                <td>
-                    <div>
-                        <span th:text="${#numbers.formatInteger(orderInfo.amount,4)}+ ' 원'"></span>
-                        <button class="btn" th:onclick="|location.href='@{|/store-order/id/${orderInfo.id}|}'|"> 상세 내역</button>
-                    </div>
-                </td>
-                <td>
-                    <span th:text="${#temporals.format(orderInfo.orderedAt, 'yyyy-MM-dd HH:mm')}"></span>
-                </td>
-                <td>
-                    <div class="btnBox" th:if="${orderInfo.cancelledAt==null}">
-                        <button class="btn btn-danger" th:if="${orderInfo.acceptedAt==null}" th:value="${orderInfo.id}" onclick="deleteOrder(this.value)">주문 취소</button>
-                        <button class="btn btn-success" th:if="${orderInfo.acceptedAt==null}" th:value="${orderInfo.id}" onclick="acceptOrder(this.value)">수락</button>
-                        <button class="btn btn-dark" th:if="${orderInfo.cookingStartedAt==null and orderInfo.acceptedAt!=null }" th:value="${orderInfo.id}" onclick="acceptOrder(this.value)">조리 시작</button>
-                        <button class="btn btn-dark" th:if="${orderInfo.deliveryStartedAt==null and orderInfo.cookingStartedAt!=null}" th:value="${orderInfo.id}" onclick="acceptOrder(this.value)">배달 시작</button>
-                        <button class="btn btn-dark" th:if="${orderInfo.deliveryStartedAt!=null and orderInfo.receivedAt==null }" th:value="${orderInfo.id}" onclick="acceptOrder(this.value)">배달 완료</button>
-                        <span th:if="${orderInfo.deliveryStartedAt!=null and orderInfo.receivedAt==null}" th:text="${#temporals.format(orderInfo.deliveryStartedAt, 'yyyy-MM-dd HH:mm') + '   배달 시작'}"></span>
-                        <span th:if="${orderInfo.receivedAt!=null}" th:text="${#temporals.format(orderInfo.receivedAt, 'yyyy-MM-dd HH:mm') + '   배달 완료'}"></span>
-                    </div>
-                    <span th:unless="${orderInfo.cancelledAt==null}">취소된 주문입니다.</span>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-
+    <div sec:authorize="hasAnyAuthority('ROLE_MASTER')"  class="text-center">
+        <h2>
+            마스터 페이지입니다.
+        </h2>
     </div>
+    <div sec:authorize="hasAnyAuthority('ROLE_ADMIN')" class="text-center">
+        <h2>
+            Delivery Store 관리자 페이지 입니다.
+        </h2>
+    </div>
+
 </div>
 </html>

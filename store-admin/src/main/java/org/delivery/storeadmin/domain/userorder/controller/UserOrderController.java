@@ -40,7 +40,7 @@ public class UserOrderController {
 
         model.addAttribute("orderList",orderList);
 
-        return "home";
+        return "order/orderList";
     }
 
     @PostMapping("/id/{orderId}")

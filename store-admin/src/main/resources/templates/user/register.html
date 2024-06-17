@@ -11,7 +11,7 @@
         $(document).ready(function(){
             var errorMessage = [[${errorMessage}]];
             if(errorMessage != null){
-                alert(errorMessages.replaceAll(',','\n'));
+                alert(errorMessage.replaceAll(',','\n'));
             }
         });
     </script>
@@ -21,7 +21,7 @@
     <span class="logo">Delivery</span>
     <span class="logo">-STORE-</span>
     <span>회원가입</span>
-    <form action="/open-api/store-user/register" role="form" method="post" th:object="${storeUserRegisterRequest}">
+    <form action="/master/store-user/register" role="form" method="post" th:object="${storeUserRegisterRequest}">
         <input type="hidden" th:name="${_csrf?.parameterName}" th:value="${_csrf?.token}" />
         <div class="userInput">
             <label  class="col-form-label">email</label>
@@ -44,7 +44,6 @@
 
         <div>
             <button class="btn btn-secondary" type="submit" >signup</button>
-            <button class="btn btn-dark" type="button" onclick="location.href='/store-user/login'">login</button>
         </div>
     </form>
 </div>
