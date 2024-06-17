@@ -20,14 +20,11 @@ public class SecurityConfig {
     private List<String> SWAGGER = List.of(
             "/swagger-ui.html",
             "/swagger-ui/**",
-            "/v3/api-docs/**",
-            "/store-user/**"
+            "/v3/api-docs/**"
     );
     @Bean
     public SecurityFilterChain filterChain (HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
-//                .formLogin(Customizer.withDefaults())
-        ;
+        http.csrf(AbstractHttpConfigurer::disable);
 
         http
             .authorizeHttpRequests(it->{
@@ -35,6 +32,7 @@ public class SecurityConfig {
                     .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                     .requestMatchers(SWAGGER.toArray(new String[0])).permitAll()
                     .requestMatchers("/open-api/**").permitAll()
+                    .requestMatchers("/store-user/**").permitAll()
                     .requestMatchers("/store-order/**").hasRole(StoreUserRole.ADMIN.toString())
                     .requestMatchers("/store-menu/**").hasRole(StoreUserRole.ADMIN.toString())
                     .requestMatchers("/master/**").hasRole(StoreUserRole.MASTER.toString())
@@ -45,7 +43,7 @@ public class SecurityConfig {
             .formLogin(form->
                     form
                     .loginPage("/store-user/login").permitAll()
-                    .defaultSuccessUrl("/store-order")
+                    .defaultSuccessUrl("/")
                     .failureUrl("/store-user/login/error")
             );
         http

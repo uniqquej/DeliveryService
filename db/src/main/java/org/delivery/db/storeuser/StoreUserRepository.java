@@ -8,4 +8,5 @@ import java.util.Optional;
 
 public interface StoreUserRepository extends JpaRepository<StoreUserEntity, Long> {
     Optional<StoreUserEntity> findFirstByEmailAndStatusOrderByIdDesc(String email, StoreUserStatus status);
+    Optional<StoreUserEntity> findFirstByEmail(String email);
 }

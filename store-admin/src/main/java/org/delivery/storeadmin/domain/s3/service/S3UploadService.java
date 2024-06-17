@@ -1,4 +1,4 @@
-package org.delivery.storeadmin.domain.storemenu.service;
+package org.delivery.storeadmin.domain.s3.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
@@ -7,6 +7,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.util.IOUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +26,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j(topic = "s3 upload")
 public class S3UploadService {
 
     private final AmazonS3 amazonS3Client;
@@ -32,17 +34,17 @@ public class S3UploadService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
 
-    public String upload(MultipartFile image) {
+    public String upload(MultipartFile image, String folderName) {
         if(image.isEmpty() || Objects.isNull(image.getOriginalFilename())){
             throw new IllegalArgumentException("파일 없음");
         }
-        return this.uploadImage(image);
+        return this.uploadImage(image, folderName);
     }
 
-    private String uploadImage(MultipartFile image) {
+    private String uploadImage(MultipartFile image, String folderName) {
         this.validateImageFileExtention(image.getOriginalFilename());
         try {
-            return this.uploadImageToS3(image);
+            return this.uploadImageToS3(image, folderName);
         } catch (IOException e) {
             throw new IllegalArgumentException("파일 없음");
         }
@@ -62,7 +64,7 @@ public class S3UploadService {
         }
     }
 
-    private String uploadImageToS3(MultipartFile image) throws IOException {
+    private String uploadImageToS3(MultipartFile image, String folderName) throws IOException {
         String originalFilename = image.getOriginalFilename(); //원본 파일 명
         String extention = originalFilename.substring(originalFilename.lastIndexOf(".")); //확장자 명
 
@@ -82,6 +84,7 @@ public class S3UploadService {
                             .withCannedAcl(CannedAccessControlList.PublicRead);
             amazonS3Client.putObject(putObjectRequest);
         }catch (Exception e){
+            log.error("************* {}",e.getMessage());
             throw new IllegalArgumentException("s3  업로드 오류");
         }finally {
             byteArrayInputStream.close();

@@ -1,11 +1,11 @@
 package org.delivery.storeadmin.domain.storemenu.business;
 
 import lombok.RequiredArgsConstructor;
+import org.delivery.storeadmin.domain.s3.service.S3UploadService;
 import org.delivery.storeadmin.domain.store.business.StoreBusiness;
 import org.delivery.storeadmin.domain.storemenu.controller.model.MenuRegisterRequest;
 import org.delivery.storeadmin.domain.storemenu.controller.model.StoreMenuResponse;
 import org.delivery.storeadmin.domain.storemenu.converter.StoreMenuConverter;
-import org.delivery.storeadmin.domain.storemenu.service.S3UploadService;
 import org.delivery.storeadmin.domain.storemenu.service.StoreMenuService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -38,7 +38,7 @@ public class StoreMenuBusiness {
     }
 
     public void registerMenu(Long storeId, MenuRegisterRequest menuRegisterRequest, MultipartFile menuImgFile) throws Exception {
-        var imgUrl = s3UploadService.upload(menuImgFile);
+        var imgUrl = s3UploadService.upload(menuImgFile, "menuImg/");
         var storeMenuEntity = storeMenuConverter.toEntity(menuRegisterRequest, imgUrl);
         storeMenuService.registerMenu(storeId, storeMenuEntity);
     }

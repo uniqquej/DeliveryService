@@ -43,10 +43,12 @@ public class StoreMenuController {
             @AuthenticationPrincipal UserSession userSession,
             Model model
     ){
+
         try {
             storeMenuBusiness.registerMenu(userSession.getStoreId(), menuRegisterRequest, menuImgFile);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            model.addAttribute("errorMessage",e.getMessage());
+            return "store/menuRegister";
         }
         return "redirect:/store-menu";
     }
