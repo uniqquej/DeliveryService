@@ -13,6 +13,7 @@ import org.delivery.api.domain.userorder.producer.UserOrderProducer;
 import org.delivery.api.domain.userorder.service.UserOrderService;
 import org.delivery.api.domain.userordermenu.converter.UserOrderMenuConverter;
 import org.delivery.api.domain.userordermenu.service.UserOrderMenuService;
+import org.delivery.db.storemenu.StoreMenuEntity;
 import org.delivery.db.userorder.UserOrderEntity;
 import org.delivery.db.userordermenu.UserOrderMenuEntity;
 
@@ -34,17 +35,19 @@ public class UserOrderBusiness {
 
     public UserOrderResponse order(User user, UserOrderRequest request){
 
-        var storeMenuEntityList = request.getStoreMenuIdList().stream().map(
-                it-> storeMenuService.getStoreMenuWithThrow(it)
-        ).toList();
+        List<StoreMenuEntity> storeMenuEntityList = storeMenuService.getStoreMenuWithThrow(request.getStoreMenuIdList());
 
         List<UserOrderMenuEntity> orderMenuEntityList = userOrderMenuService.order(storeMenuEntityList, request.getCountList());
         UserOrderEntity orderEntity = userOrderService.order(user, orderMenuEntityList, request);
 
-        //비동기로 가맹점에 주문 알림
-        userOrderProducer.sendOrder(orderEntity);
+        try{ //비동기로 가맹점에 주문 알림
+            userOrderProducer.sendOrder(orderEntity);
+            orderEntity = userOrderService.orderSuccess(orderEntity);
 
-        return userOrderConverter.toResponse(orderEntity);
+            return userOrderConverter.toResponse(orderEntity);
+        }catch (Exception e){
+            return userOrderConverter.toResponse(orderEntity);
+        }
     }
 
     public List<UserOrderDetailResponse> currentOrders(User user) {

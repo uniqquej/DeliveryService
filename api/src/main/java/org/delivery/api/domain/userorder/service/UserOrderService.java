@@ -1,12 +1,11 @@
 package org.delivery.api.domain.userorder.service;
 
-import org.delivery.api.domain.userorder.controller.model.UserOrderRequest;
-import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.delivery.api.common.error.ErrorCode;
 import org.delivery.api.common.error.UserErrorCode;
 import org.delivery.api.common.exception.ApiException;
 import org.delivery.api.domain.user.model.User;
+import org.delivery.api.domain.userorder.controller.model.UserOrderRequest;
 import org.delivery.db.store.StoreRepository;
 import org.delivery.db.store.enums.StoreStatus;
 import org.delivery.db.user.UserRepository;
@@ -16,6 +15,7 @@ import org.delivery.db.userorder.UserOrderRepository;
 import org.delivery.db.userorder.enums.UserOrderStatus;
 import org.delivery.db.userordermenu.UserOrderMenuEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -38,12 +38,18 @@ public class UserOrderService {
 
         var orderEntity =  UserOrderEntity.createUserOrder(userEntity, userOrderMenuEntityList);
         orderEntity.setOrderedAt(LocalDateTime.now());
-        orderEntity.setStatus(UserOrderStatus.ORDER);
+        orderEntity.setStatus(UserOrderStatus.REGISTERED);
         orderEntity.setTotalPrice(orderEntity.getTotalPrice());
         orderEntity.setStore(storeEntity);
         orderEntity.setAddress(request.getAddress());
         userOrderRepository.save(orderEntity);
         return orderEntity;
+    }
+
+    @Transactional
+    public UserOrderEntity orderSuccess(UserOrderEntity userOrderEntity){
+        userOrderEntity.setStatus(UserOrderStatus.ORDER);
+        return userOrderEntity;
     }
 
     public UserOrderEntity findOrderByIdAndUser(Long id, Long userId){

@@ -15,11 +15,6 @@ import java.util.List;
 public class StoreMenuService {
     private final StoreMenuRepository storeMenuRepository;
 
-    public StoreMenuEntity getStoreMenuWithThrow(Long id){
-        var entity = storeMenuRepository.findFirstByIdAndStatusOrderByIdDesc(id, StoreMenuStatusEnum.REGISTERED);
-        return entity.orElseThrow(()->new ApiException(ErrorCode.NULL_POINT));
-    }
-
     public List<StoreMenuEntity> getStoreMenuWithThrow(List<Long> menuIds){
         var storeEntityList = menuIds.stream().map(it->{
           return storeMenuRepository.getReferenceById(it);
