@@ -6,16 +6,32 @@
 
 <th:block layout:fragment="css">
     <link rel="stylesheet" th:href="@{/css/order.css}">
+    <style>
+        .content{
+        height: 80vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        }
+
+        .info{
+        border: 2px solid rgb(238, 99, 99);
+        background-color: rgb(238, 99, 99);
+        box-shadow: 5px 5px 5px gray;
+        color : white;
+        border-radius: 15px;
+        padding: 5px;
+        }
+    </style>
 </th:block>
 
-<div layout:fragment="content">
+<div layout:fragment="content" class="content">
 
-    <div sec:authorize="hasAnyAuthority('ROLE_MASTER')"  class="text-center">
-        <h2>
-            마스터 페이지입니다.
-        </h2>
+    <div sec:authorize="hasAnyAuthority('ROLE_ADMIN')"  class="info text-center">
+        <h2 th:text="${storeName}"></h2>
+        <h4>환영합니다!! 주문 관리를 해봐요😀</h4>
     </div>
-    <div sec:authorize="hasAnyAuthority('ROLE_ADMIN')" class="text-center">
+    <div sec:authorize="hasAnyAuthority('ROLE_MASTER')" class="text-center">
         <h2>
             Delivery Store 관리자 페이지 입니다.
         </h2>

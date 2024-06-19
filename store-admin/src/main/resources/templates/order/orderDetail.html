@@ -5,6 +5,11 @@
 
 <th:block layout:fragment="css">
     <link rel="stylesheet" th:href="@{/css/order.css}">
+    <style>
+        .address{
+            margin-bottom : 15px;
+        }
+    </style>
 </th:block>
 
 <th:block layout:fragment="script">
@@ -16,7 +21,10 @@
         <div class="orderInfo text-center">
             <span th:text="'주문 시간:'+ ${#temporals.format(order.orderedAt, 'yyyy-MM-dd HH:mm')}"></span><br>
             <br>
-
+            <div class="address">
+                <span><b>배달주소</b></span><br>
+                <span th:text="${order.address}"></span>
+            </div>
             <div th:each="menu : ${orderMenuList}">
                 <div>
                     <span th:text="${menu.menuName}"></span>
