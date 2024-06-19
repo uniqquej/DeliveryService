@@ -22,7 +22,7 @@ public class StoreMenuService {
 
     public List<StoreMenuEntity> getStoreMenuWithThrow(List<Long> menuIds){
         var storeEntityList = menuIds.stream().map(it->{
-          return getStoreMenuWithThrow(it);
+          return storeMenuRepository.getReferenceById(it);
         });
 
         return storeEntityList.toList();
