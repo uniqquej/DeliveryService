@@ -12,7 +12,7 @@ public interface UserOrderRepository extends JpaRepository<UserOrderEntity,Long>
     List<UserOrderEntity> findAllByStoreIdAndStatusOrderByIdDesc(Long storeId, UserOrderStatus status);
 
     @Query("SELECT o FROM UserOrderEntity o JOIN FETCH o.orderMenus WHERE o.store.id = :storeId" +
-            " AND o.status in :statusList")
+            " AND o.status in :statusList ORDER BY o.id DESC")
     List<UserOrderEntity> findAllByStoreIdAndStatusInOrderByIdDesc(@Param("storeId") Long storeId, @Param("statusList") List<UserOrderStatus> status);
 
     @Query("SELECT o FROM UserOrderEntity o JOIN FETCH o.orderMenus WHERE o.user.id = :userId" +

@@ -32,9 +32,7 @@
             )
 
             let result = alert(message);
-            if(result){
-                acceptOrder(data.user_order_response.id);
-            }
+            location.reload();
         }
     </script>
     <script type="text/javascript" th:src="@{/js/order.js}"></script>
