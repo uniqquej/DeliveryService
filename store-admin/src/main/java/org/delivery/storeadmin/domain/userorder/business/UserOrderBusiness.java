@@ -39,7 +39,7 @@ public class UserOrderBusiness {
         var userOrderMenuList = userOrderMenuService.getUserOrderMenu(userOrderMessage.getUserOrderId());
         var storeMenuList = userOrderMenuList.stream().map(
                 it -> {
-                    return storeMenuService.getStoreMenuWithThrow(it.getMenu().getId());
+                    return it.getMenu();
                 }).toList();
 
         var userOrderMenuResponseList = userOrderMenuConverter.toResponse(userOrderMenuList, storeMenuList);

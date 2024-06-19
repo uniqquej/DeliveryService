@@ -2,6 +2,7 @@ package org.delivery.api.domain.user.business;
 
 import lombok.RequiredArgsConstructor;
 import org.delivery.api.common.annotation.Business;
+import org.delivery.api.common.exception.ApiException;
 import org.delivery.api.domain.token.business.TokenBusiness;
 import org.delivery.api.domain.token.controller.model.TokenResponse;
 import org.delivery.api.domain.user.controller.model.UserLoginRequest;
@@ -23,8 +24,17 @@ public class UserBusiness {
 
     public UserResponse register(UserRegisterRequest request) {
         var entity = userConverter.toEntity(request);
-        var savedEntity = userService.register(entity);
-        var response = userConverter.toResponse(savedEntity);
+        UserResponse response;
+        try{
+            var savedEntity = userService.register(entity);
+            response = userConverter.toResponse(savedEntity);
+        }catch(ApiException e){
+            response = UserResponse.builder()
+                    .name(request.getName())
+                    .email("이미 존재하는 이메일입니다.")
+                    .address(request.getAddress())
+                    .build();
+        }
         return response;
     }
 

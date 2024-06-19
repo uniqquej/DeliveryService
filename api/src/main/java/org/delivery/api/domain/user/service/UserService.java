@@ -25,6 +25,8 @@ public class UserService {
 
     public UserEntity register(UserEntity userEntity){
         var email = userEntity.getEmail();
+        var emailCheck = userRepository.findByEmail(email);
+        if(!emailCheck.isEmpty()) throw new ApiException(ErrorCode.BAD_REQUEST);
 
         return Optional.ofNullable(userEntity)
                 .map(it->{

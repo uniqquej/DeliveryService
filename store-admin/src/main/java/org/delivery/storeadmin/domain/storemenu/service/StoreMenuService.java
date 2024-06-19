@@ -18,9 +18,8 @@ public class StoreMenuService {
     private final StoreMenuRepository storeMenuRepository;
     private final StoreRepository storeRepository;
 
-    public StoreMenuEntity getStoreMenuWithThrow(Long id){
-        return storeMenuRepository.findFirstByIdAndStatusOrderByIdDesc(id, StoreMenuStatusEnum.REGISTERED)
-                .orElseThrow(()->new RuntimeException(("메뉴를 찾지 못했습니다.")));
+    public List<StoreMenuEntity> getStoreMenuWithThrow(Long id){
+        return storeMenuRepository.findAllByStoreIdAndStatus(id, StoreMenuStatusEnum.REGISTERED);
     }
 
     public List<StoreMenuEntity> getStoreMenuByStoreId(Long storeId){
