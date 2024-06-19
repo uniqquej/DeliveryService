@@ -85,9 +85,9 @@ public class StoreEntity extends BaseEntity {
             sumStar = sumStar.add(BigDecimal.valueOf(review.getStar()));
         }
 
-        BigDecimal avgStar = sumStar.divide(BigDecimal.valueOf(reviews.size()));
+        BigDecimal avgStar = sumStar.divide(BigDecimal.valueOf(reviews.size()), 2, BigDecimal.ROUND_CEILING);
 
-        return avgStar.setScale(2, RoundingMode.HALF_EVEN);
+        return avgStar;
     }
 
 }

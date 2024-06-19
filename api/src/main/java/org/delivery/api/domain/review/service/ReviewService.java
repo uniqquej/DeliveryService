@@ -60,11 +60,11 @@ public class ReviewService {
     }
 
     public List<ReviewEntity> searchByStoreId(Long storeId){
-        return reviewRepository.findAllByStoreIdAndStatusOrderByIdDesc(storeId, ReviewStatus.REGISTERED);
+        return reviewRepository.findAllByStoreIdAndStatusOrderByRegisteredAtDesc(storeId, ReviewStatus.REGISTERED);
     }
 
     public List<ReviewEntity> searchByUserId(Long userId){
-        return reviewRepository.findAllByUserIdAndStatusOrderByIdDesc(userId, ReviewStatus.REGISTERED);
+        return reviewRepository.findAllByUserIdAndStatusOrderByRegisteredAtDesc(userId, ReviewStatus.REGISTERED);
     }
 
     @Transactional
