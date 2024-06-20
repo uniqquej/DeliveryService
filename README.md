@@ -1,7 +1,9 @@
 ## 1. 프로젝트 개요
 ### ✔ 프로젝트 소개
 #### 배달 플랫폼 클론 코딩
-배포 주소 : http://www.my-delivery.store
+#### 배포 주소
+#### - 고객 : http://www.my-delivery.store
+#### - 가맹점 : https://admin.my-delivery.store
 ---
 ## 2. 서비스
 ### ✔ API 명세
