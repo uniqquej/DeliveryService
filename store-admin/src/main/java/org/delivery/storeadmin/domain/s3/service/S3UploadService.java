@@ -68,7 +68,7 @@ public class S3UploadService {
         String originalFilename = image.getOriginalFilename(); //원본 파일 명
         String extention = originalFilename.substring(originalFilename.lastIndexOf(".")); //확장자 명
 
-        String s3FileName = "menuImg/"+UUID.randomUUID().toString().substring(0, 10) + originalFilename; //변경된 파일 명
+        String s3FileName = folderName+"/"+UUID.randomUUID().toString().substring(0, 10) + originalFilename; //변경된 파일 명
 
         InputStream is = image.getInputStream();
         byte[] bytes = IOUtils.toByteArray(is);
