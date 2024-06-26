@@ -12,8 +12,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script th:inline="javascript">
 
-        // SSE 연결
-        const url = "http://localhost:8081/api/sse/connect";    // 접속주소
+        const url = "https://admin.my-delivery.store/api/sse/connect";    // 접속주소
         const eventSource = new EventSource(url);               // sse 연결
 
         eventSource.onopen = event => {
