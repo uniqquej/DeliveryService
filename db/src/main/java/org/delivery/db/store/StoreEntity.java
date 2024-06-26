@@ -1,20 +1,15 @@
 package org.delivery.db.store;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.delivery.db.BaseEntity;
 import org.delivery.db.review.ReviewEntity;
 import org.delivery.db.store.enums.StoreCategory;
 import org.delivery.db.store.enums.StoreStatus;
 import org.delivery.db.storemenu.StoreMenuEntity;
-import org.hibernate.annotations.Fetch;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.List;
 
 @Entity
@@ -45,7 +40,8 @@ public class StoreEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private StoreCategory category;
 
-    private BigDecimal star;
+    @Builder.Default
+    private BigDecimal star = BigDecimal.ZERO;
 
     @Column(length = 200, nullable = false)
     private String thumbnailUrl;

@@ -13,7 +13,7 @@ public class UserOrderConverter {
         return UserOrderResponse.builder()
                 .id(userOrderEntity.getId())
                 .storeId(userOrderEntity.getStore().getId())
-                .hasReview(userOrderEntity.hasReview())
+                .hasReview(userOrderEntity.isHasReview())
                 .address(userOrderEntity.getAddress())
                 .status(userOrderEntity.getStatus())
                 .totalPrice(userOrderEntity.getTotalPrice())

@@ -1,10 +1,7 @@
 package org.delivery.db.userorder;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.delivery.db.BaseEntity;
 import org.delivery.db.review.ReviewEntity;
@@ -37,8 +34,8 @@ public class UserOrderEntity extends BaseEntity {
     @JoinColumn(name = "store_id")
     private StoreEntity store;
 
-    @OneToOne(mappedBy = "userOrder",fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private ReviewEntity review;
+    @OneToMany(mappedBy = "userOrder",fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReviewEntity> review = new ArrayList<>();
 
     @OneToMany(mappedBy = "userOrder", cascade = CascadeType.ALL,orphanRemoval = true, fetch = FetchType.LAZY)
     private List<UserOrderMenuEntity> orderMenus = new ArrayList<>();
@@ -49,6 +46,8 @@ public class UserOrderEntity extends BaseEntity {
 
     @Column(precision=11, scale = 4, nullable = false)
     private BigDecimal totalPrice;
+
+    private boolean hasReview = false;
 
     private LocalDateTime orderedAt;
 
@@ -76,12 +75,9 @@ public class UserOrderEntity extends BaseEntity {
     }
 
     public void addReview(ReviewEntity reviewEntity){
-        review = reviewEntity;
+        review.add(reviewEntity);
+        hasReview = true;
         reviewEntity.setUserOrder(this);
-    }
-
-    public boolean hasReview() {
-        return getReview() != null;
     }
 
     public BigDecimal getTotalPrice(){

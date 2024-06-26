@@ -40,7 +40,7 @@ public class ReviewEntity extends BaseEntity {
     @JoinColumn(name="store_id")
     private StoreEntity store;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="order_id")
     private UserOrderEntity userOrder;
 
