@@ -26,6 +26,7 @@ public class S3Config {
         AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
         return AmazonS3ClientBuilder.standard()
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .enablePathStyleAccess()
                 .withRegion(region).build();
     }
 }

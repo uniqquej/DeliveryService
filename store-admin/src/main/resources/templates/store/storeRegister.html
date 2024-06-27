@@ -68,12 +68,14 @@
                 <span class="input-group-text">가게 주소</span>
             </div>
             <input type="text" th:field="*{address}" class="form-control" placeholder="가게 주소를 입력해주세요">
+            <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="error">Incorrect data</p>
         </div>
         <div class="input-group">
             <div class="input-group-prepend">
                 <span class="input-group-text">최소 배달 금액</span>
             </div>
             <input type="text" th:field="*{minimumDeliveryPrice}" class="form-control" placeholder="최소 배달금액 입력해주세요">
+            <p th:if="${#fields.hasErrors('minimumDeliveryPrice')}" th:errors="*{minimumDeliveryPrice}" class="error">Incorrect data</p>
         </div>
 
         <div class="input-group">
@@ -81,6 +83,7 @@
                 <span class="input-group-text">가게 번호</span>
             </div>
             <input type="text" th:field="*{phoneNumber}" class="form-control" placeholder="전화 번호를 입력해주세요">
+            <p th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" class="error">Incorrect data</p>
         </div>
 
         <div class="form-group" >
