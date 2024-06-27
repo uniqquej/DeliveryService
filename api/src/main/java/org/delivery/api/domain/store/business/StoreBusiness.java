@@ -36,6 +36,12 @@ public class StoreBusiness {
         return response.toList();
     }
 
+    public List<StoreResponse> searchCategoryAndRegion(StoreCategory category, String region) {
+        var entityList = storeService.searchByCategoryAndRegion(category, region);
+        var response = entityList.stream().map(storeConverter::toResponse);
+        return response.toList();
+    }
+
     public List<StoreResponse> searchName(String name) {
         var entityList = storeService.searchByName(name);
         var response = entityList.stream().map(storeConverter::toResponse);
@@ -67,4 +73,6 @@ public class StoreBusiness {
         var storeEntity = storeService.canceledLikeStore(id);
         return storeConverter.toResponse(storeEntity);
     }
+
+
 }
