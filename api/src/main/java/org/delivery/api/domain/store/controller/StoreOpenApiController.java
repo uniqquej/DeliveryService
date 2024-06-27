@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.delivery.api.common.annotation.UserSession;
 import org.delivery.api.common.api.Api;
 import org.delivery.api.domain.store.business.StoreBusiness;
-import org.delivery.api.domain.store.controller.model.StoreDetailResponse;
 import org.delivery.api.domain.store.controller.model.StoreRegisterRequest;
 import org.delivery.api.domain.store.controller.model.StoreResponse;
 import org.delivery.api.domain.user.model.User;
@@ -27,13 +26,18 @@ public class StoreOpenApiController {
             @RequestParam(required = false, name = "category")
             StoreCategory category,
             @RequestParam(required = false, name = "name")
-            String name
+            String name,
+            @RequestParam(required = false, name = "region")
+            String region
     ){
         List<StoreResponse> response = new ArrayList<>();
 
-        if(category != null)
-            response = storeBusiness.searchCategory(category);
-
+        if(category != null) {
+            if (region != null & !region.equals("전체"))
+                response = storeBusiness.searchCategoryAndRegion(category, region);
+            else
+                response = storeBusiness.searchCategory(category);
+        }
         else if(name!=null)
             response = storeBusiness.searchName(name);
 
