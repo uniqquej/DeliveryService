@@ -40,6 +40,13 @@ public class StoreService {
                 category
         );
     }
+    public List<StoreEntity> searchByCategoryAndRegion(StoreCategory category, String region) {
+        return storeRepository.findAllByCategoryAndRegion(
+                StoreStatus.REGISTERED,
+                category,
+                region
+        );
+    }
 
     public List<StoreEntity> searchByName(String name) {
         return storeRepository.findByNameContaining(name);
@@ -59,4 +66,6 @@ public class StoreService {
         storeEntity.canceledLikeStore();
         return storeEntity;
     }
+
+
 }

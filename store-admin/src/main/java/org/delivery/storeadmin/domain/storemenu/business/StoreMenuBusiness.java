@@ -37,10 +37,11 @@ public class StoreMenuBusiness {
         }).toList();
     }
 
-    public void registerMenu(Long storeId, MenuRegisterRequest menuRegisterRequest, MultipartFile menuImgFile) throws Exception {
+    public String registerMenu(Long storeId, MenuRegisterRequest menuRegisterRequest, MultipartFile menuImgFile) throws Exception {
         var imgUrl = s3UploadService.upload(menuImgFile, "menuImg/");
         var storeMenuEntity = storeMenuConverter.toEntity(menuRegisterRequest, imgUrl);
-        storeMenuService.registerMenu(storeId, storeMenuEntity);
+        var response = storeMenuService.registerMenu(storeId, storeMenuEntity);
+        return response.getThumbnailUrl();
     }
 
     private String uploadFile(String uploadPath, String originalFileName, byte[] fileData)throws Exception{
