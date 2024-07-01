@@ -4,15 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.delivery.api.common.annotation.Business;
 import org.delivery.api.domain.likestore.business.LikeStoreBusiness;
 import org.delivery.api.domain.store.controller.model.StoreDetailResponse;
-import org.delivery.api.domain.store.controller.model.StoreRegisterRequest;
 import org.delivery.api.domain.store.controller.model.StoreResponse;
 import org.delivery.api.domain.store.converter.StoreConverter;
 import org.delivery.api.domain.store.service.StoreService;
 import org.delivery.api.domain.storemenu.converter.StoreMenuConverter;
 import org.delivery.api.domain.user.model.User;
 import org.delivery.db.store.enums.StoreCategory;
-
-import java.util.List;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 
 @RequiredArgsConstructor
 @Business
@@ -22,31 +21,6 @@ public class StoreBusiness {
 
     private final StoreMenuConverter storeMenuConverter;
     private final LikeStoreBusiness likeStoreBusiness;
-
-    public StoreResponse register(StoreRegisterRequest request){
-        var entity = storeConverter.toEntity(request);
-        var savedEntity = storeService.register(entity);
-        var response = storeConverter.toResponse(savedEntity);
-        return response;
-    }
-
-    public List<StoreResponse> searchCategory(StoreCategory category){
-        var entityList = storeService.searchByCategory(category);
-        var response = entityList.stream().map(storeConverter::toResponse);
-        return response.toList();
-    }
-
-    public List<StoreResponse> searchCategoryAndRegion(StoreCategory category, String region) {
-        var entityList = storeService.searchByCategoryAndRegion(category, region);
-        var response = entityList.stream().map(storeConverter::toResponse);
-        return response.toList();
-    }
-
-    public List<StoreResponse> searchName(String name) {
-        var entityList = storeService.searchByName(name);
-        var response = entityList.stream().map(storeConverter::toResponse);
-        return response.toList();
-    }
 
     public StoreDetailResponse storeDetail(Long storeId, User user){
         var likedStoreIds = likeStoreBusiness.checkMyLikeStore(storeId, user);
@@ -72,6 +46,13 @@ public class StoreBusiness {
     public StoreResponse canceledLikeStore(Long id){
         var storeEntity = storeService.canceledLikeStore(id);
         return storeConverter.toResponse(storeEntity);
+    }
+
+    public Slice<StoreResponse> search(StoreCategory category, Pageable pageable, Long lastId, String region,String name){
+        var entityList = storeService.search(category, lastId, region,name, pageable);
+        var response = entityList.map(storeConverter::toResponse);
+
+        return response;
     }
 
 

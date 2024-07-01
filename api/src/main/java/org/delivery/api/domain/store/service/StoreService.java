@@ -7,11 +7,9 @@ import org.delivery.api.common.exception.ApiException;
 import org.delivery.db.store.StoreEntity;
 import org.delivery.db.store.StoreRepository;
 import org.delivery.db.store.enums.StoreCategory;
-import org.delivery.db.store.enums.StoreStatus;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,34 +23,6 @@ public class StoreService {
         return storeRepository.findById(id).orElseThrow(()->new ApiException(ErrorCode.NULL_POINT));
     }
 
-    public StoreEntity register(StoreEntity store){
-        return Optional.ofNullable(store)
-                .map(it-> {
-                    it.setStatus(StoreStatus.REGISTERED);
-                    return storeRepository.save(store);
-                })
-                .orElseThrow(()->new ApiException(ErrorCode.NULL_POINT));
-    }
-
-    public List<StoreEntity> searchByCategory(StoreCategory category){
-        return storeRepository.findAllByStatusAndCategoryOrderByStarDesc(
-                StoreStatus.REGISTERED,
-                category
-        );
-    }
-    public List<StoreEntity> searchByCategoryAndRegion(StoreCategory category, String region) {
-        return storeRepository.findAllByCategoryAndRegion(
-                StoreStatus.REGISTERED,
-                category,
-                region
-        );
-    }
-
-    public List<StoreEntity> searchByName(String name) {
-        return storeRepository.findByNameContaining(name);
-    }
-
-
     @Transactional
     public StoreEntity likeStore(Long id){
         var storeEntity = storeRepository.getReferenceById(id);
@@ -65,6 +35,10 @@ public class StoreService {
         var storeEntity = storeRepository.getReferenceById(id);
         storeEntity.canceledLikeStore();
         return storeEntity;
+    }
+
+    public Slice<StoreEntity> search(StoreCategory category, Long lastId, String region, String name,Pageable pageable){
+        return storeRepository.findStoreTerminateList(category, lastId,region,name,pageable);
     }
 
 

@@ -3,9 +3,7 @@ package org.delivery.db.likestore;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.delivery.db.likestore.enums.LikeStatus;
-import org.delivery.db.likestore.QLikeStoreEntity;
 import org.delivery.db.store.StoreEntity;
-
 
 import java.util.List;
 import java.util.Optional;
