@@ -6,7 +6,6 @@ import org.delivery.db.likestore.LikeStoreRepository;
 import org.delivery.db.likestore.enums.LikeStatus;
 import org.delivery.db.store.StoreEntity;
 import org.delivery.db.store.StoreRepository;
-import org.delivery.db.user.UserEntity;
 import org.delivery.db.user.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,7 +45,7 @@ public class LikeStoreService {
     @Transactional
     public LikeStoreEntity updateStatus(LikeStoreEntity likeStore,Long storeId,
                                         Long userId, LikeStatus likeStatus) {
-       var store = storeRepository.getReferenceById(storeId);
+       var store = storeRepository.findByStoreId(storeId);
        var user = userRepository.getReferenceById(userId);
 
        user.addLikedStore(likeStore);
