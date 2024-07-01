@@ -39,6 +39,17 @@ public class StoreRepositoryCustomImpl implements StoreRepositoryCustom{
         return new SliceImpl<>(results, pageable, hasNextPage(results, pageable.getPageSize()));
     }
 
+    @Override
+    public List<StoreEntity> findStores() {
+        QStoreEntity storeEntity = QStoreEntity.storeEntity;
+        List<StoreEntity> results = queryFactory
+                .select(storeEntity)
+                .from(storeEntity)
+                .fetch();
+
+        return results;
+    }
+
     private boolean hasNextPage(List<StoreEntity> contents, int pageSize){
         if(contents.size() > pageSize){
             contents.remove(pageSize);
