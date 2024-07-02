@@ -11,9 +11,10 @@ import org.delivery.api.domain.review.controller.model.ReviewResponse;
 import org.delivery.api.domain.review.controller.model.ReviewUpdateRequest;
 import org.delivery.api.domain.user.model.User;
 import org.delivery.api.domain.userorder.business.UserOrderBusiness;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/review")
@@ -32,15 +33,16 @@ public class ReviewApiController {
     }
 
     @GetMapping("/search")
-    public Api<List<ReviewResponse>> search(
+    public Api<Page<ReviewResponse>> search(
             @RequestParam(name = "storeId",required = false) Long storeId,
-            @Parameter(hidden = true) @UserSession User user
+            @Parameter(hidden = true) @UserSession User user,
+            @PageableDefault(page=1) Pageable pageable
     ){
         if(storeId==null) {
-            var response = reviewBusiness.searchByUserId(user.getId());
+            var response = reviewBusiness.searchByUserId(user.getId(),pageable);
             return Api.OK(response);
         }
-        var response = reviewBusiness.searchByStoreId(storeId);
+        var response = reviewBusiness.searchByStoreId(storeId,pageable);
         return Api.OK(response);
     }
 

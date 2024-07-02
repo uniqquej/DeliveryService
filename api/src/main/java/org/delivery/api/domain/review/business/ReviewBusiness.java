@@ -2,15 +2,14 @@ package org.delivery.api.domain.review.business;
 
 import lombok.RequiredArgsConstructor;
 import org.delivery.api.common.annotation.Business;
-import org.delivery.api.common.api.Api;
 import org.delivery.api.domain.review.controller.model.ReviewRegisterRequest;
 import org.delivery.api.domain.review.controller.model.ReviewResponse;
 import org.delivery.api.domain.review.controller.model.ReviewUpdateRequest;
 import org.delivery.api.domain.review.converter.ReviewConverter;
 import org.delivery.api.domain.review.service.ReviewService;
 import org.delivery.api.domain.user.model.User;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Business
 @RequiredArgsConstructor
@@ -24,14 +23,14 @@ public class ReviewBusiness {
         return reviewConverter.toResponse(savedEntity);
     }
 
-    public List<ReviewResponse> searchByStoreId(Long storeId){
-        var reviewEntityList = reviewService.searchByStoreId(storeId);
-        return reviewEntityList.stream().map(reviewConverter::toResponse).toList();
+    public Page<ReviewResponse> searchByStoreId(Long storeId, Pageable pageable){
+        var reviewEntityList = reviewService.searchByStoreId(storeId,pageable);
+        return reviewEntityList.map(reviewConverter::toResponse);
     }
 
-    public List<ReviewResponse> searchByUserId(Long userId){
-        var reviewEntityList = reviewService.searchByUserId(userId);
-        return reviewEntityList.stream().map(reviewConverter::toResponse).toList();
+    public Page<ReviewResponse> searchByUserId(Long userId, Pageable pageable){
+        var reviewEntityList = reviewService.searchByUserId(userId, pageable);
+        return reviewEntityList.map(reviewConverter::toResponse);
     }
 
     public ReviewResponse getReview(Long reviewId) {

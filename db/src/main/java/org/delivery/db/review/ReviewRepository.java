@@ -1,11 +1,11 @@
 package org.delivery.db.review;
 
 import org.delivery.db.review.enums.ReviewStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-
 public interface ReviewRepository extends JpaRepository<ReviewEntity, Long> {
-    List<ReviewEntity> findAllByStoreIdAndStatusOrderByRegisteredAtDesc(Long storeId, ReviewStatus status);
-    List<ReviewEntity> findAllByUserIdAndStatusOrderByRegisteredAtDesc(Long userId, ReviewStatus status);
+    Page<ReviewEntity> findAllByStoreIdAndStatusOrderByRegisteredAtDesc(Long storeId, ReviewStatus status, PageRequest pageRequest);
+    Page<ReviewEntity> findAllByUserIdAndStatusOrderByRegisteredAtDesc(Long userId, ReviewStatus status, PageRequest pageRequest);
 }

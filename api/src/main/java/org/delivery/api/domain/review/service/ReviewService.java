@@ -14,10 +14,12 @@ import org.delivery.db.store.StoreRepository;
 import org.delivery.db.user.UserRepository;
 import org.delivery.db.user.enums.UserStatus;
 import org.delivery.db.userorder.UserOrderRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -59,12 +61,24 @@ public class ReviewService {
         );
     }
 
-    public List<ReviewEntity> searchByStoreId(Long storeId){
-        return reviewRepository.findAllByStoreIdAndStatusOrderByRegisteredAtDesc(storeId, ReviewStatus.REGISTERED);
+    public Page<ReviewEntity> searchByStoreId(Long storeId, Pageable pageable){
+        int page = pageable.getPageNumber()-1;
+        int pageSize = 5;
+        return reviewRepository.findAllByStoreIdAndStatusOrderByRegisteredAtDesc(
+                storeId,
+                ReviewStatus.REGISTERED,
+                PageRequest.of(page, pageSize)
+        );
     }
 
-    public List<ReviewEntity> searchByUserId(Long userId){
-        return reviewRepository.findAllByUserIdAndStatusOrderByRegisteredAtDesc(userId, ReviewStatus.REGISTERED);
+    public Page<ReviewEntity> searchByUserId(Long userId, Pageable pageable){
+        int page = pageable.getPageNumber()-1;
+        int pageSize = 3;
+        return reviewRepository.findAllByUserIdAndStatusOrderByRegisteredAtDesc(
+                userId,
+                ReviewStatus.REGISTERED,
+                PageRequest.of(page, pageSize)
+        );
     }
 
     @Transactional
