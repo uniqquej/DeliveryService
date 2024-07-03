@@ -1,6 +1,8 @@
 package org.delivery.db.userorder;
 
 import org.delivery.db.userorder.enums.UserOrderStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,9 +17,13 @@ public interface UserOrderRepository extends JpaRepository<UserOrderEntity,Long>
             " AND o.status in :statusList ORDER BY o.id DESC")
     List<UserOrderEntity> findAllByStoreIdAndStatusInOrderByIdDesc(@Param("storeId") Long storeId, @Param("statusList") List<UserOrderStatus> status);
 
-    @Query("SELECT o FROM UserOrderEntity o JOIN FETCH o.orderMenus WHERE o.user.id = :userId" +
-            " AND o.status in :statusList ORDER BY o.id DESC")
-    List<UserOrderEntity> findOrderWithOrderMenu(@Param("userId") Long userId, @Param("statusList") List<UserOrderStatus> statusList);
+    @Query(value="SELECT o FROM UserOrderEntity o JOIN FETCH o.orderMenus WHERE o.user.id = :userId AND o.status in :statusList ORDER BY o.id DESC",
+            countQuery = "SELECT o FROM UserOrderEntity o WHERE o.user.id = :userId AND o.status in :statusList")
+    Page<UserOrderEntity> findOrderWithOrderMenu(
+            @Param("userId") Long userId,
+            @Param("statusList") List<UserOrderStatus> statusList,
+            PageRequest pageRequest
+    );
 
     @Query("SELECT o FROM UserOrderEntity o JOIN FETCH o.orderMenus WHERE o.user.id = :userId AND o.id = :orderId")
     Optional<UserOrderEntity> findOrderByIdAndUser(

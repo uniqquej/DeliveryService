@@ -10,9 +10,10 @@ import org.delivery.api.domain.userorder.business.UserOrderBusiness;
 import org.delivery.api.domain.userorder.controller.model.UserOrderDetailResponse;
 import org.delivery.api.domain.userorder.controller.model.UserOrderRequest;
 import org.delivery.api.domain.userorder.controller.model.UserOrderResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/user-order")
@@ -33,20 +34,22 @@ public class UserOrderApiController {
     }
 
     @GetMapping("/current")
-    public Api<List<UserOrderDetailResponse>> currentOrders(
+    public Api<Page<UserOrderDetailResponse>> currentOrders(
             @Parameter(hidden = true)
-            @UserSession User user
+            @UserSession User user,
+            @PageableDefault(page=1) Pageable pageable
     ){
-        var response = userOrderBusiness.currentOrders(user);
+        var response = userOrderBusiness.currentOrders(user,pageable);
         return Api.OK(response);
     }
 
     @GetMapping("/history")
-    public Api<List<UserOrderDetailResponse>> historyOrders(
+    public Api<Page<UserOrderDetailResponse>> historyOrders(
             @Parameter(hidden = true)
-            @UserSession User user
+            @UserSession User user,
+            @PageableDefault(page = 1) Pageable pageable
     ){
-        var response = userOrderBusiness.historyOrders(user);
+        var response = userOrderBusiness.historyOrders(user,pageable);
         return Api.OK(response);
     }
 
