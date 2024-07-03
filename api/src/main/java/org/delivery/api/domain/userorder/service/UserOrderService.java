@@ -14,6 +14,9 @@ import org.delivery.db.userorder.UserOrderEntity;
 import org.delivery.db.userorder.UserOrderRepository;
 import org.delivery.db.userorder.enums.UserOrderStatus;
 import org.delivery.db.userordermenu.UserOrderMenuEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,20 +61,25 @@ public class UserOrderService {
 
         return userOrder;
     }
-    public List<UserOrderEntity> getUserOrderList(Long userId, List<UserOrderStatus> statusList){
-        return userOrderRepository.findOrderWithOrderMenu(userId, statusList);
+    public Page<UserOrderEntity> getUserOrderList(Long userId, List<UserOrderStatus> statusList, PageRequest pageRequest){
+
+        return userOrderRepository.findOrderWithOrderMenu(userId, statusList, pageRequest);
     }
 
-    public List<UserOrderEntity> currentOrders(Long userId){
+    public Page<UserOrderEntity> currentOrders(Long userId,Pageable pageable){
+        int page = pageable.getPageNumber()-1;
+        int pageSize = 2;
         // 현재 진행 중인 주문
         var statusList = List.of(UserOrderStatus.ORDER,UserOrderStatus.COOKING,UserOrderStatus.ACCEPT,UserOrderStatus.DELIVERY) ;
-        return getUserOrderList(userId,statusList);
+        return getUserOrderList(userId,statusList,PageRequest.of(page, pageSize));
     }
 
-    public List<UserOrderEntity> historyOrders(Long userId){
+    public Page<UserOrderEntity> historyOrders(Long userId,Pageable pageable){
+        int pageSize = 2;
+        int page = pageable.getPageNumber()-1;
         //완료된 주문
         var statusList = List.of(UserOrderStatus.RECEIVE) ;
-        return getUserOrderList(userId,statusList);
+        return getUserOrderList(userId,statusList,PageRequest.of(page, pageSize));
     }
 
     public UserOrderEntity order(UserOrderEntity userOrderEntity){

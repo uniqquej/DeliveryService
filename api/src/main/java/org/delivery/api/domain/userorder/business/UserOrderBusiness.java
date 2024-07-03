@@ -16,6 +16,8 @@ import org.delivery.api.domain.userordermenu.service.UserOrderMenuService;
 import org.delivery.db.storemenu.StoreMenuEntity;
 import org.delivery.db.userorder.UserOrderEntity;
 import org.delivery.db.userordermenu.UserOrderMenuEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -50,10 +52,10 @@ public class UserOrderBusiness {
         }
     }
 
-    public List<UserOrderDetailResponse> currentOrders(User user) {
-        var userOrderEntityList = userOrderService.currentOrders(user.getId());
+    public Page<UserOrderDetailResponse> currentOrders(User user, Pageable pageable) {
+        var userOrderEntityList = userOrderService.currentOrders(user.getId(),pageable);
 
-        var userOrderDetailRespnseList = userOrderEntityList.stream().map(userOrderEntity->{
+        var userOrderDetailRespnseList = userOrderEntityList.map(userOrderEntity->{
 
             var userOrderMenuEntityList = userOrderEntity.getOrderMenus();
             var storeMenuEntityList = userOrderMenuEntityList.stream().map(userOrderMenuEntity->{
@@ -66,15 +68,15 @@ public class UserOrderBusiness {
                     .storeResponse(storeConverter.toResponse(userOrderEntity.getStore()))
                     .userOrderMenuResponseList(userOrderMenuConverter.toResponse(userOrderMenuEntityList, storeMenuEntityList))
                     .build();
-        }).toList();
+        });
 
         return userOrderDetailRespnseList;
     }
 
-    public List<UserOrderDetailResponse> historyOrders(User user) {
-        var userOrderEntityList = userOrderService.historyOrders(user.getId());
+    public Page<UserOrderDetailResponse> historyOrders(User user, Pageable pageable) {
+        var userOrderEntityList = userOrderService.historyOrders(user.getId(),pageable);
 
-        var userOrderDetailRespnseList = userOrderEntityList.stream().map(userOrderEntity->{
+        var userOrderDetailRespnseList = userOrderEntityList.map(userOrderEntity->{
 
             var userOrderMenuEntityList = userOrderEntity.getOrderMenus();
             var storeMenuEntityList = userOrderMenuEntityList.stream().map(userOrderMenuEntity->{
@@ -87,7 +89,7 @@ public class UserOrderBusiness {
                     .storeResponse(storeConverter.toResponse(userOrderEntity.getStore()))
                     .userOrderMenuResponseList(userOrderMenuConverter.toResponse(userOrderMenuEntityList, storeMenuEntityList))
                     .build();
-        }).toList();
+        });
 
         return userOrderDetailRespnseList;
     }
